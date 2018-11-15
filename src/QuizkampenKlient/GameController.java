@@ -1,6 +1,5 @@
 package QuizkampenKlient;
 
-import Models.Question;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package QuizkampenKlient;
 
-import Models.Question;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,8 +27,8 @@ public class QuizkampenKlient {
             out.println(fromUser);
             
             while (true){
-                Object fromServer = in.readObject();
-                System.out.println(((Question) fromServer).question);
+                Question fromServer = (Question) in.readObject();
+                System.out.println(fromServer.getCorrectAnswer());
                 System.out.println(userReader.readLine());
                 System.out.println("Välkommen" + fromUser);
                 

@@ -24,13 +24,14 @@ public class QuizkampenServer {
             BufferedReader in = new BufferedReader(new InputStreamReader(klientSocket.getInputStream()));
             PrintWriter outString = new PrintWriter(klientSocket.getOutputStream(), true);
             ) {
+            
             String input;
-            Question q = new Question(null, "123", null, "12332");
+            Question q = new Question("pelle", "123");
             while ((input = in.readLine()) != null) {
                 System.out.println(input);
                 ut.writeObject(q);
                 outString.println("Hejhej");
-                
+                ut.flush();
 
             }
 
