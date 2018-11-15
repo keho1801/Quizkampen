@@ -3,7 +3,9 @@
 
 package QuizkampenServer;
 
+import Models.Question;
 import java.io.BufferedReader;
+import QuizkampenKlient.*;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
