@@ -63,8 +63,11 @@ public void setPlayers(Player X, Player Y){
         int Yscore = 0;
         while(true){
                 for(int i=0; i<numberOfGamesPerRound; i++){
-                    Xoutput.writeObject(questionsInGame);
-                    Youtput.writeObject(questionsInGame);
+                    Xoutput.writeObject(questionsInGame.get(0));
+                    Xoutput.writeObject(questionsInGame.get(1));
+                    Youtput.writeObject(questionsInGame.get(0));
+                    Youtput.writeObject(questionsInGame.get(1));
+                    
                     for(int y= 0; y<2; y++){   
                         if((XstrInput = Xinput.readLine())!=null){
                             if(questionsInGame.get(y).getAnswers()[0].equals(XstrInput)){
@@ -73,13 +76,13 @@ public void setPlayers(Player X, Player Y){
                         }
                         if((YstrInput = Yinput.readLine())!=null){
                             if(questionsInGame.get(y).getAnswers()[0].equals(XstrInput)){
-                                    playerX.setScore(Xscore++);   
+                                    playerY.setScore(Yscore++);   
                             }
 
                         }
                     }
                     Xoutput.writeObject(playerY);
-                    Xoutput.writeObject(playerX);    
+                    Youtput.writeObject(playerX);    
                 }
                 if(!Xinput.readLine().equalsIgnoreCase("nytt spel")&& !Yinput.readLine().equalsIgnoreCase("nytt spel")){
                     break;
