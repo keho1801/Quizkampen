@@ -1,6 +1,6 @@
 package QuizkampenKlient;
 
-import Models.Question;
+import Models.*;
 import java.awt.*;
 import static java.awt.BorderLayout.*;
 import java.awt.event.*;
@@ -26,7 +26,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
     
     Object fromServer;
     Question questionFromServer;
-    Question playerFromServer;
+    Player playerFromServer;
     String answer;
     PrintWriter out;
     Properties properties = new Properties();
@@ -177,8 +177,13 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
                     setButtons(questionFromServer.getAnswers());
                     category.setText(questionFromServer.getCategory());
                 }
-            } else if (fromServer instanceof Question) {
-                
+            } else if (fromServer instanceof Player) {
+                playerFromServer = ((Player) in.readObject());
+                question.setText(playerFromServer.getName());
+                playerFromServer = ((Player) in.readObject());
+                nextRound.setText(playerFromServer.getName());
+            } else if (fromServer instanceof String) {
+                question.setText((String) fromServer);
             }
              
         } catch (Exception e) {
