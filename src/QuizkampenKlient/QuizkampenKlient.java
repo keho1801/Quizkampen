@@ -92,7 +92,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
         
         
         try{
-            Socket socketToServer = new Socket(InetAddress.getLocalHost(), 12345);
+            Socket socketToServer = new Socket(InetAddress.getByName("172.20.201.12"), 12345);
             out = new PrintWriter(socketToServer.getOutputStream(), true);
             in = new ObjectInputStream(socketToServer.getInputStream());
             
@@ -167,9 +167,9 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
     
     public void runWhile(){
         try {
-            
+            fromServer = in.readObject();
             if (fromServer instanceof Question) {
-                questionFromServer = ((Question) in.readObject());
+                questionFromServer = (Question) fromServer;
                 if (questionFromServer.getQuestion() == null){
                     question.setText("Välkommen " + fromUser);
                 } else {
@@ -178,7 +178,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
                     category.setText(questionFromServer.getCategory());
                 }
             } else if (fromServer instanceof Player) {
-                playerFromServer = ((Player) in.readObject());
+                playerFromServer = ((Player) fromServer);
                 question.setText(playerFromServer.getName());
                 playerFromServer = ((Player) in.readObject());
                 nextRound.setText(playerFromServer.getName());
