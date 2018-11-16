@@ -37,5 +37,7 @@ public class Question implements Serializable {
     public void setAnswers(String[] answers) {
         this.answers = answers;
     }
-
+    public void setQuestionNull(){
+        this.question = null; 
+    }
 }

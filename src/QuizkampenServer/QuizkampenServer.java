@@ -2,6 +2,7 @@
  */
 package QuizkampenServer;
 
+import Models.Player;
 import Models.Question;
 import java.io.BufferedReader;
 import QuizkampenKlient.*;
@@ -27,10 +28,7 @@ public class QuizkampenServer {
                 PrintWriter outString = new PrintWriter(klientSocket.getOutputStream(), true);) {
 
             String input;
-<<<<<<< HEAD
-=======
             Question q = new Question("pelle", null, "123");
->>>>>>> 2a0cb4810ef2503c288a26bf9cfcd4de5fd0321a
             while ((input = in.readLine()) != null) {
                 GameController game = new GameController();
                 
@@ -46,7 +44,7 @@ public class QuizkampenServer {
                 playerX.setOpponent(playerO);
                 playerO.setOpponent(playerX);
                 game.start();
-
+                
             }
         }
         }

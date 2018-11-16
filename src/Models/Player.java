@@ -1,7 +1,6 @@
-package QuizkampenKlient;
+package Models;
 
-import java.net.Socket;
-
+import QuizkampenServer.GameController;
 import java.net.Socket;
 
 public class Player extends Thread {
@@ -9,11 +8,13 @@ public class Player extends Thread {
     private Player opponent;
     private int score;
     private int wins;
-    Socket socket;
+    private GameController game;
+    public Socket socket;
     
-public Player(String name, Socket socket) {
+public Player(Socket socket, String name, GameController game) {
     this.name = name;
     this.socket = socket;
+    this.game = game;
 }
 
     public String getPlayerName() {
