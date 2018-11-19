@@ -36,7 +36,7 @@ public class GameController extends Thread {
         
         Random random = new Random(4);
         String[] randomCategory = q.getCategory();
-        questionsInGame = q.getQuestionsInGame(numberOfGamesPerRound,randomCategory[random.nextInt()]);
+        questionsInGame = q.getQuestionsInGame(numberOfGamesPerRound,randomCategory[random.nextInt(4)]); 
         }
     
     public void setPlayers(Player X, Player Y){

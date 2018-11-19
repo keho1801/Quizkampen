@@ -1,6 +1,7 @@
 package QuizkampenKlient;
 
-import Models.*;
+import Models.Player;
+import Models.Question;
 import java.awt.*;
 import static java.awt.BorderLayout.*;
 import java.awt.event.*;
@@ -92,7 +93,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
         
         
         try{
-            Socket socketToServer = new Socket(InetAddress.getByName("172.20.201.12"), 12345);
+            Socket socketToServer = new Socket(InetAddress.getLocalHost(), 12345);
             out = new PrintWriter(socketToServer.getOutputStream(), true);
             in = new ObjectInputStream(socketToServer.getInputStream());
             
@@ -134,7 +135,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
     
     public boolean isCorrectAnswer(JButton button, Question answers){
         boolean result;
-        if (button.getText().equals(answers.getAnswers()[0])) {
+        if (button.getText().equals(questionFromServer.getAnswers()[0])) {
             result = true;
         }else {
             result = false;
@@ -145,6 +146,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
         return result;
     }
     
+    @Override
     public void actionPerformed(ActionEvent event){
         String correctAnswer = "";
         for (int i = 0; i < 4; i++) {
@@ -167,8 +169,11 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
     
     public void runWhile(){
         try {
+            out.flush();
             fromServer = in.readObject();
+            System.out.print(fromServer);
             if (fromServer instanceof Question) {
+                
                 questionFromServer = (Question) fromServer;
                 if (questionFromServer.getQuestion() == null){
                     question.setText("Välkommen " + fromUser);
@@ -180,13 +185,15 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
             } else if (fromServer instanceof Player) {
                 playerFromServer = ((Player) fromServer);
                 question.setText(playerFromServer.getName());
-                playerFromServer = ((Player) in.readObject());
-                nextRound.setText(playerFromServer.getName());
+//                playerFromServer = ((Player) in.readObject());
+//                nextRound.setText(playerFromServer.getName());
             } else if (fromServer instanceof String) {
                 question.setText((String) fromServer);
             }
              
-        } catch (Exception e) {
+        }catch (EOFException e) {
+            e.printStackTrace();
+        }catch (Exception e) {
             e.printStackTrace();
         }
     }
