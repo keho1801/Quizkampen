@@ -18,7 +18,7 @@ public class QuestionUtil {
     String[] category = { "Samtid", "Sport och fritid", "Kultur och musik", "Vetenskap & historia" };
     int nrOfQuestionsInGame;
     int nrOfQuestionsPerRound;
-    
+
     public QuestionUtil() throws FileNotFoundException, IOException {
         
         Properties properties = new Properties();

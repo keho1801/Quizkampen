@@ -11,7 +11,7 @@ import java.util.Properties;
 import java.util.Random;
 import javax.swing.*;
 
-public class QuizkampenKlient  extends JFrame implements ActionListener{
+public class QuizkampenKlient extends JFrame implements ActionListener{
     
     JPanel backgoundPanel = new JPanel();
     JPanel questionsPanel = new JPanel();
@@ -166,11 +166,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
         out.write(((JButton) event.getSource()).getText());
         nextRound.setVisible(true);
     }
-    
-    //Om en Player tas emot ska namnet kollas och poäng placeras ut
-    //Om användaren vill spela ett nytt spel skickas en "nytt spel" sträng
-    //Sätt fast kategorilabeln
-    
+        
     public void runWhile(){
         try {
             fromServer = in.readObject();
