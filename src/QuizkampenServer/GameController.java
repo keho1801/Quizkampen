@@ -36,7 +36,14 @@ public class GameController extends Thread {
         
         Random random = new Random(4);
         String[] randomCategory = q.getCategory();
-        questionsInGame = q.getQuestionsInGame(numberOfGamesPerRound,randomCategory[random.nextInt(4)]); 
+        
+        
+//        questionsInGame = q.getQuestionsInGame(numberOfGamesPerRound,randomCategory[random.nextInt(4)]); 
+        questionsInGame = q.getQuestionsDatabase();
+        
+        
+//        System.out.println(questionsInGame.get(0));
+//        questionsInGame = q.getQuestionsDatabase().get
         }
     
     public void setPlayers(Player X, Player Y){
@@ -81,35 +88,32 @@ public void checkQuestions(BufferedReader input,Player player) throws IOExceptio
 //            checkQuestions(Yinput,playerY);
 //            
             
-                for(int i=0; i<numberOfGamesPerRound; i++){
-                    Xoutput.writeObject(questionsInGame.get(0));
-                    Xoutput.writeObject(questionsInGame.get(1));
-                    Youtput.writeObject(questionsInGame.get(0));
-                    Youtput.writeObject(questionsInGame.get(1));
+                for (int i = 0; i < numberOfGamesPerRound; i++){
                     
-                    for(int j= 0; j<2; j++){   
-                        if((XstrInput = Xinput.readLine())!=null){
-                            if(questionsInGame.get(j).getAnswers()[0].equals(XstrInput)){
+                    Xoutput.writeObject(questionsInGame.get(i));
+                    Youtput.writeObject(questionsInGame.get(i));
+         
+                        if ((XstrInput = Xinput.readLine())!= null && (YstrInput = Yinput.readLine())!= null) {
+                            
+                            if (questionsInGame.get(i).getAnswers()[i].equals(XstrInput)){
                                 playerX.setScore(playerX.getScore()+1);   
                             }
-                        }
-                        if((YstrInput = Yinput.readLine())!=null){
-                            if(questionsInGame.get(j).getAnswers()[0].equals(YstrInput)){
+                            
+                            if (questionsInGame.get(i).getAnswers()[i].equals(YstrInput)){
                                     playerY.setScore(playerY.getScore()+1);   
                             }
-
                         }
-                    }
+                        
                     Xoutput.writeObject(playerY);
-                    Youtput.writeObject(playerX);    
+                    Youtput.writeObject(playerX);
                 }
-                if(!Xinput.readLine().equalsIgnoreCase("nytt spel")&& !Yinput.readLine().equalsIgnoreCase("nytt spel")){
+                if (!Xinput.readLine().equalsIgnoreCase("nytt spel") && !Yinput.readLine().equalsIgnoreCase("nytt spel")){
                     break;
                 }    
         }
         }
-        catch (IOException ex) {
-            System.out.println("något gick fel");
+        catch (IOException e) {
+            System.out.println("IO Exception: " + e.getMessage());
     }
 }
 }

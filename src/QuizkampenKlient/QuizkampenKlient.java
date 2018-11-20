@@ -92,15 +92,19 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         
-        try{
+        try {
             Socket socketToServer = new Socket(InetAddress.getLocalHost(), 12345);
             out = new PrintWriter(socketToServer.getOutputStream(), true);
             in = new ObjectInputStream(socketToServer.getInputStream());
             
+//            if (in.readObject() != null) {
+//                System.out.println("Objektet finns!");
+//        }
+  
             out.println(fromUser);
             runWhile();
             Thread.sleep(1000);
-            runWhile();
+//            runWhile();
             
         } catch (Exception e){
             e.printStackTrace();
