@@ -2,6 +2,7 @@
  */
 package QuizkampenServer;
 
+import Models.Player;
 import Models.Question;
 import java.io.BufferedReader;
 import QuizkampenKlient.*;
@@ -19,36 +20,29 @@ import java.net.Socket;
 public class QuizkampenServer {
 
     public static void main(String[] args) throws Exception {
-        try (
-                ServerSocket serverSocket = new ServerSocket(12345);
-                Socket klientSocket = serverSocket.accept();
-                ObjectOutputStream out = new ObjectOutputStream(klientSocket.getOutputStream());
-                BufferedReader in = new BufferedReader(new InputStreamReader(klientSocket.getInputStream()));
-                PrintWriter outString = new PrintWriter(klientSocket.getOutputStream(), true);) {
 
-            String input;
-<<<<<<< HEAD
-=======
-            Question q = new Question("pelle", null, "123");
->>>>>>> 2a0cb4810ef2503c288a26bf9cfcd4de5fd0321a
-            while ((input = in.readLine()) != null) {
-                GameController game = new GameController();
+            ServerSocket serverSocket = new ServerSocket(12345);
+            
+            try{
+                while (true) {
+
+                Player playerX = new Player("PlayerX");
+
+                Player playerY = new Player("PlayerY");
                 
-                input = in.readLine();
-                outString.println("Spelare " + input + " uppkopplad");
-                Player playerX = new Player(serverSocket.accept(), input, game);
+                GameController game = new GameController(playerX, playerY,serverSocket.accept(),serverSocket.accept());
                 
-                input = in.readLine();
-                outString.println("Spelare " + input + " uppkopplad");
-                Player playerO = new Player(serverSocket.accept(), input, game);
-                
-                game.setPlayers(playerX, playerO);
-                playerX.setOpponent(playerO);
-                playerO.setOpponent(playerX);
+                playerX.setOpponent(playerY);
+                playerY.setOpponent(playerX);
+                playerX.setGame(game);
+                playerY.setGame(game);
                 game.start();
-
+                
             }
-        }
+            }finally{
+                serverSocket.close();
+            }
+        
         }
 
     }
