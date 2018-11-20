@@ -169,9 +169,8 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
     
     public void runWhile(){
         try {
-            out.flush();
             fromServer = in.readObject();
-            System.out.print(fromServer);
+            System.out.print("hej");
             if (fromServer instanceof Question) {
                 
                 questionFromServer = (Question) fromServer;
