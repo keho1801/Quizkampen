@@ -1,19 +1,18 @@
 package Models;
 
 import QuizkampenServer.GameController;
-import java.net.Socket;
+import java.io.Serializable;
 
-public class Player extends Thread {
+public class Player implements Serializable{
+    static final long serialVersionUID = 43L;
     private String name;
     private Player opponent;
     private int score;
     private int wins;
     private GameController game;
-    public Socket socket;
     
-public Player(Socket socket, String name, GameController game) {
+public Player(String name) {
     this.name = name;
-    this.socket = socket;
     this.game = game;
 }
 
@@ -43,6 +42,12 @@ public Player(Socket socket, String name, GameController game) {
 
     public Player getOpponent() {
         return opponent;
+    }
+    public void setGame(GameController g){
+        this.game=g;
+    }
+    public void setName(String name){
+        this.name = name;  
     }
     
 }

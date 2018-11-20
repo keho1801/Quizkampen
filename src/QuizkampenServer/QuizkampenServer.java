@@ -25,15 +25,17 @@ public class QuizkampenServer {
             
             try{
                 while (true) {
-                GameController game = new GameController();
 
-                Player playerX = new Player(serverSocket.accept(), "PlayerX", game);
+                Player playerX = new Player("PlayerX");
 
-                Player playerY = new Player(serverSocket.accept(), "PlayerY", game);
+                Player playerY = new Player("PlayerY");
                 
-                game.setPlayers(playerX, playerY);
+                GameController game = new GameController(playerX, playerY,serverSocket.accept(),serverSocket.accept());
+                
                 playerX.setOpponent(playerY);
                 playerY.setOpponent(playerX);
+                playerX.setGame(game);
+                playerY.setGame(game);
                 game.start();
                 
             }
