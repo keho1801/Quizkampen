@@ -24,8 +24,10 @@ public class QuestionUtil {
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream("src/QuizkampenServer/QuestionSettings.properties"));
-            nrOfQuestionsInGame = Integer.parseInt(properties.getProperty("questionPerGame", "3"));
-            nrOfQuestionsPerRound = Integer.parseInt(properties.getProperty("questionsPerRound", "2"));   
+            String questionsPerGameString = properties.getProperty("questionsPerGame").trim();
+            nrOfQuestionsInGame = Integer.parseInt(questionsPerGameString);
+            String questionsPerRoundString = properties.getProperty("questionsPerRound").trim();
+            nrOfQuestionsPerRound = Integer.parseInt(questionsPerRoundString);   
         }
         catch (FileNotFoundException e) {
             System.out.println("File Not Found: " + e.getMessage());
@@ -70,7 +72,7 @@ public class QuestionUtil {
                     questionsDatabase.get(i).setQuestionNull();
                     if (questionsInGame.size() == nrOfQuestionsInGame){
                         return questionsInGame;
-                    }              
+                    }
                 }
                         
             }
