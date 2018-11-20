@@ -63,22 +63,22 @@ public class QuestionUtil {
         return questionsDatabase;
     }
 
-    public List<Question> getQuestionsInGame(int nrOfQuestionsInGame, String category) {
-        List<Question> nullListDatabase = new ArrayList<>();
-        for (int i = 0; i < questionsDatabase.size(); i++) {
-            if (questionsDatabase.get(i).getQuestion() != null){
-                if (questionsDatabase.get(i).getCategory().equalsIgnoreCase(category)){
-                    questionsInGame.add(questionsDatabase.get(i));
-                    questionsDatabase.get(i).setQuestionNull();
-                    if (questionsInGame.size() == nrOfQuestionsInGame){
-                        return questionsInGame;
-                    }
-                }
-                        
-            }
-        }
-        return nullListDatabase;
-    }
+//    public List<Question> getQuestionsInGame(int nrOfQuestionsInGame, String category) {
+//        List<Question> nullListDatabase = new ArrayList<>();
+//        for (int i = 0; i < questionsDatabase.size(); i++) {
+//            if (questionsDatabase.get(i).getQuestion() != null){
+//                if (questionsDatabase.get(i).getCategory().equalsIgnoreCase(category)){
+//                    questionsInGame.add(questionsDatabase.get(i));
+//                    questionsDatabase.get(i).setQuestionNull();
+//                    if (questionsInGame.size() == nrOfQuestionsInGame){
+//                        return questionsInGame;
+//                    }
+//                }
+//                        
+//            }
+//        }
+//        return nullListDatabase;
+//    }
 
     public int getNrOfQuestionsInGame() {
         return nrOfQuestionsInGame;
