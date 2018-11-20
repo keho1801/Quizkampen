@@ -171,14 +171,13 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
             ((JButton) event.getSource()).setBackground(Color.red);
         } 
         
-        out.write(((JButton) event.getSource()).getText());
+        out.println(((JButton) event.getSource()).getText());
         nextRound.setVisible(true);
     }
         
     public void runWhile(){
         try {
             fromServer = in.readObject();
-            System.out.print("hej");
             if (fromServer instanceof Question) {
                 
                 questionFromServer = (Question) fromServer;

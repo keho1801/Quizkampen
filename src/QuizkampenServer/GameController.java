@@ -68,27 +68,37 @@ public class GameController extends Thread {
             Youtput.writeObject(playerY);
 
             while (true) {
+                
                 for (int i = 0; i < numberOfGamesPerRound; i++) {
 
                     Xoutput.writeObject(questionsInGame.get(i));
                     Youtput.writeObject(questionsInGame.get(i));
 
+//                    XstrInput = Xinput.readLine();
+//                    System.out.println(XstrInput);
+//                    YstrInput = Yinput.readLine();
+//                    System.out.println(YstrInput);
+                    
                     if ((XstrInput = Xinput.readLine()) != null && (YstrInput = Yinput.readLine()) != null) {
+                        
+                        
                         if (questionsInGame.get(i).getAnswers()[0].equals(XstrInput)) {
                             playerX.setScore(playerX.getScore() + 1);
+                            System.out.println(playerX.getName() + " fick en poäng");
                         }
                         if (questionsInGame.get(i).getAnswers()[0].equals(YstrInput)) {
                             playerY.setScore(playerY.getScore() + 1);
+                            System.out.println(playerY.getName() + " fick en poäng");
                         }
                     }
                 }
-
+                System.out.println("Runda avklarad!");
                 Xoutput.writeObject(playerY);
                 Youtput.writeObject(playerX);
 
-                if (!Xinput.readLine().equalsIgnoreCase("nytt spel") && !Yinput.readLine().equalsIgnoreCase("nytt spel")) {
-                    break;
-                }
+//                if (!Xinput.readLine().equalsIgnoreCase("nytt spel") && !Yinput.readLine().equalsIgnoreCase("nytt spel")) {
+//                    break;
+//                }
             }
         } catch (IOException ex) {
             System.out.println("något gick fel");
