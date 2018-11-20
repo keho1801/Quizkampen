@@ -1,7 +1,16 @@
 package QuizkampenKlient;
 
+import Models.Player;
 import Models.Question;
+import java.awt.*;
+import static java.awt.BorderLayout.CENTER;
+import static java.awt.BorderLayout.NORTH;
+import static java.awt.BorderLayout.SOUTH;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -9,8 +18,11 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Properties;
+import java.util.Random;
+import javax.swing.*;
 
-<<<<<<< HEAD
+
 public class QuizkampenKlient  extends JFrame implements ActionListener{
     
     JPanel backgoundPanel = new JPanel();
@@ -199,11 +211,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
         }catch (Exception e) {
             e.printStackTrace();
         }
-    }
-=======
-public class QuizkampenKlient {
->>>>>>> gamelogic2
-    
+    }  
     public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
         
         try (Socket socketToServer = new Socket(InetAddress.getLocalHost(), 12345);
