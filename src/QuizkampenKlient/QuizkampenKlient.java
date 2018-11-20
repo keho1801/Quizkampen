@@ -1,5 +1,6 @@
 package QuizkampenKlient;
 
+import Models.Player;
 import Models.Question;
 import java.awt.*;
 import static java.awt.BorderLayout.*;
@@ -26,7 +27,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
     
     Object fromServer;
     Question questionFromServer;
-    Question playerFromServer;
+    Player playerFromServer;
     String answer;
     PrintWriter out;
     Properties properties = new Properties();
@@ -134,7 +135,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
     
     public boolean isCorrectAnswer(JButton button, Question answers){
         boolean result;
-        if (button.getText().equals(answers.getAnswers()[0])) {
+        if (button.getText().equals(questionFromServer.getAnswers()[0])) {
             result = true;
         }else {
             result = false;
@@ -145,6 +146,7 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
         return result;
     }
     
+    @Override
     public void actionPerformed(ActionEvent event){
         String correctAnswer = "";
         for (int i = 0; i < 4; i++) {
@@ -167,9 +169,11 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
     
     public void runWhile(){
         try {
-            
+            fromServer = in.readObject();
+            System.out.print("hej");
             if (fromServer instanceof Question) {
-                questionFromServer = ((Question) in.readObject());
+                
+                questionFromServer = (Question) fromServer;
                 if (questionFromServer.getQuestion() == null){
                     question.setText("Välkommen " + fromUser);
                 } else {
@@ -177,11 +181,18 @@ public class QuizkampenKlient  extends JFrame implements ActionListener{
                     setButtons(questionFromServer.getAnswers());
                     category.setText(questionFromServer.getCategory());
                 }
-            } else if (fromServer instanceof Question) {
-                
+            } else if (fromServer instanceof Player) {
+                playerFromServer = ((Player) fromServer);
+                question.setText(playerFromServer.getPlayerName());
+//                playerFromServer = ((Player) in.readObject());
+//                nextRound.setText(playerFromServer.getName());
+            } else if (fromServer instanceof String) {
+                question.setText((String) fromServer);
             }
              
-        } catch (Exception e) {
+        }catch (EOFException e) {
+            e.printStackTrace();
+        }catch (Exception e) {
             e.printStackTrace();
         }
     }

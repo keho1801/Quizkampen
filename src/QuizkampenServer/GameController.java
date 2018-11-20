@@ -35,8 +35,14 @@ public class GameController extends Thread {
         q.initializeQuestionDatabase();
         //shufflar listan för frågorna
         q.shuffleQuestionList();
-        //läs in antal frågor/ronder från properties filen 
-        questionsInGame = q.getQuestionsInGame(numberOfGamesPerRound,"Vetenskap");
+        //läs in antal frågor/ronder från properties filen
+        
+        Random random = new Random(4);
+        String[] randomCategory = q.getCategory();
+        questionsInGame = q.getQuestionsInGame(numberOfGamesPerRound,randomCategory[random.nextInt(4)]); 
+        }
+    
+    public void setPlayers(Player X, Player Y){
         this.playerX = X;
         this.playerY = Y;
         this.Xsocket = socketX;

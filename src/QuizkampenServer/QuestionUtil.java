@@ -23,9 +23,9 @@ public class QuestionUtil {
         
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream("src/QuestionSettings.properties"));
-            nrOfQuestionsInGame = Integer.parseInt(properties.getProperty("questionsPerGame"));
-            nrOfQuestionsPerRound = Integer.parseInt(properties.getProperty("questionsPerRound"));   
+            properties.load(new FileInputStream("src/QuizkampenServer/QuestionSettings.properties"));
+            nrOfQuestionsInGame = Integer.parseInt(properties.getProperty("questionPerGame", "3"));
+            nrOfQuestionsPerRound = Integer.parseInt(properties.getProperty("questionsPerRound", "2"));   
         }
         catch (FileNotFoundException e) {
             System.out.println("File Not Found: " + e.getMessage());
