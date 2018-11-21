@@ -3,12 +3,23 @@ package QuizkampenKlient;
 import Models.Player;
 import Models.Question;
 import java.awt.*;
-import static java.awt.BorderLayout.*;
-import java.awt.event.*;
-import java.io.*;
-import java.net.*;
+import static java.awt.BorderLayout.CENTER;
+import static java.awt.BorderLayout.NORTH;
+import static java.awt.BorderLayout.SOUTH;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.Properties;
+import java.util.Random;
 import javax.swing.*;
 
 
@@ -17,7 +28,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     JPanel backgoundPanel = new JPanel();
     JPanel questionsPanel = new JPanel();
     JPanel infoPanel = new JPanel();
-    JTextField question = new JTextField();
+    JLabel question = new JLabel();
     JLabel category = new JLabel("Kategori");
     JButton nextRound = new JButton("Nästa fråga");
     JButton[] buttons = new JButton[4];
@@ -34,9 +45,6 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     Properties properties = new Properties();
     ObjectInputStream in;
     String fromUser;
-    String fName;
-    int fSize;
-    String userName;
     
     public QuizkampenKlient(){
         buttons[0] = button1;
@@ -46,9 +54,50 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         fromUser = JOptionPane.showInputDialog("Ange namn: ");
         
         
+        try {
+            properties.load(new FileInputStream("src/QuizkampenKlient/ClientSettings.properties"));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        String fName = properties.getProperty("fontName","Verdana");
+        int fSize = Integer.parseInt(properties.getProperty("fontSize", "24"));
         
+
+        question.setFont(new Font(fName, Font.PLAIN, fSize));
+        question.setForeground(Color.black);
+        question.setBackground(Color.WHITE);
         backgoundPanel.setLayout(new BorderLayout());
+        questionsPanel.setLayout(new GridLayout(2, 2));
+        questionsPanel.setLayout(new FlowLayout());
+        backgoundPanel.add(question, NORTH);
+        question.setPreferredSize(new Dimension(550, 300));
+        backgoundPanel.add(questionsPanel, CENTER);
+        backgoundPanel.add(infoPanel, SOUTH);
+        infoPanel.add(category);
+        category.setPreferredSize(new Dimension(350, 50));
+        infoPanel.add(nextRound);
+        nextRound.setPreferredSize(new Dimension(200, 50));
+        nextRound.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                runWhile();
+            }
+        });
+        questionsPanel.add(button1);
+        questionsPanel.add(button2);
+        questionsPanel.add(button3);
+        questionsPanel.add(button4);
+        button1.setPreferredSize(new Dimension(270, 150));
+        button2.setPreferredSize(new Dimension(270, 150));
+        button3.setPreferredSize(new Dimension(270, 150));
+        button4.setPreferredSize(new Dimension(270, 150));
+        button1.addActionListener(this);
+        button2.addActionListener(this);
+        button3.addActionListener(this);
+        button4.addActionListener(this);
         add(backgoundPanel);
+        
         setSize(600, 760);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -61,8 +110,9 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
             in = new ObjectInputStream(socketToServer.getInputStream());
   
             out.println(fromUser);
-            setGameLayout();
             runWhile();
+            Thread.sleep(1000);
+//            runWhile();
             
         } catch (Exception e){
             e.printStackTrace();
@@ -124,68 +174,6 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         out.println(((JButton) event.getSource()).getText());
         nextRound.setVisible(true);
     }
-    
-    public void setGameLayout(){
-        backgoundPanel.removeAll();
-        question.setFont(new Font(fName, Font.PLAIN, fSize));
-        question.setForeground(Color.black);
-        question.setBackground(Color.WHITE);
-        questionsPanel.setLayout(new GridLayout(2, 2));
-        questionsPanel.setLayout(new FlowLayout());
-        backgoundPanel.add(question, NORTH);
-        question.setPreferredSize(new Dimension(550, 300));
-        backgoundPanel.add(questionsPanel, CENTER);
-        backgoundPanel.add(infoPanel, SOUTH);
-        infoPanel.add(category);
-        category.setPreferredSize(new Dimension(350, 50));
-        infoPanel.add(nextRound);
-        nextRound.setPreferredSize(new Dimension(200, 50));
-        nextRound.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                runWhile();
-            }
-        });
-        questionsPanel.add(button1);
-        questionsPanel.add(button2);
-        questionsPanel.add(button3);
-        questionsPanel.add(button4);
-        button1.setPreferredSize(new Dimension(270, 150));
-        button2.setPreferredSize(new Dimension(270, 150));
-        button3.setPreferredSize(new Dimension(270, 150));
-        button4.setPreferredSize(new Dimension(270, 150));
-        button1.addActionListener(this);
-        button2.addActionListener(this);
-        button3.addActionListener(this);
-        button4.addActionListener(this);
-        
-        backgoundPanel.repaint();
-        backgoundPanel.revalidate();
-    }
-    
-    public void setWelcomeLayout(){
-        backgoundPanel.removeAll();
-        try {
-            properties.load(new FileInputStream("src/QuizkampenKlient/ClientSettings.properties"));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        fName = properties.getProperty("fontName","Verdana");
-        fSize = Integer.parseInt(properties.getProperty("fontSize", "24"));
-        
-        backgoundPanel.add(new JLabel("Välkommen " + userName));
-        
-        backgoundPanel.repaint();
-        backgoundPanel.revalidate();
-    }
-    
-    public void setRoundLayout(){
-        backgoundPanel.removeAll();
-        
-        backgoundPanel.repaint();
-        backgoundPanel.revalidate();
-    }
         
     public void runWhile(){
         try {
@@ -194,7 +182,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
                 
                 questionFromServer = (Question) fromServer;
                 if (questionFromServer.getQuestion() == null){
-                    userName = fromUser;
+                    question.setText("Välkommen " + fromUser);
                 } else {
                     question.setText(questionFromServer.getQuestion());
                     setButtons(questionFromServer.getAnswers());
@@ -203,6 +191,8 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
             } else if (fromServer instanceof Player) {
                 playerFromServer = ((Player) fromServer);
                 question.setText(playerFromServer.getName());
+//                playerFromServer = ((Player) in.readObject());
+//                nextRound.setText(playerFromServer.getName());
             } else if (fromServer instanceof String) {
                 question.setText((String) fromServer);
             }
