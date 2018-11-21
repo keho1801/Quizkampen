@@ -28,14 +28,16 @@ public class GameController extends Thread {
     private QuestionUtil q;
     private String XstrInput;
     private String YstrInput;
-    private int numberOfGamesPerRound = 2;
+    private int numberOfQuestionsPerRound;
+    private int numberOfRoundsPerGame;
 
     public GameController(Player X, Player Y, Socket socketX, Socket socketY) throws IOException {
         
         q = new QuestionUtil();
         q.initializeQuestionDatabase();
         q.shuffleQuestionList();
-        
+        numberOfQuestionsPerRound = q.getnrOfQuestionsPerRound();
+        numberOfRoundsPerGame = q.getnrOfRoundsPerGame();
         questionsInGame = q.getQuestionsDatabase();
         
         this.playerX = X;
@@ -53,12 +55,6 @@ public class GameController extends Thread {
 
     }
 
-    public void sendQuestions(ObjectOutputStream output) throws IOException {
-        for (Question q : questionsInGame) {
-            output.writeObject(q);
-        }
-    }
-
     @Override
     public void run() {
         try {
@@ -66,10 +62,11 @@ public class GameController extends Thread {
             playerY.setName(Yinput.readLine());
             Xoutput.writeObject(playerX);
             Youtput.writeObject(playerY);
-
-            while (true) {
+           
+            int o = 0;
+            while (o <= numberOfRoundsPerGame) {
                 
-                for (int i = 0; i < numberOfGamesPerRound; i++) {
+                for (int i = 0; i < numberOfQuestionsPerRound; i++) {
 
                     Xoutput.writeObject(questionsInGame.get(i));
                     Youtput.writeObject(questionsInGame.get(i));

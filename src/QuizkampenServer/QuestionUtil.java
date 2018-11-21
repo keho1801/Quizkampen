@@ -16,16 +16,16 @@ public class QuestionUtil {
     private List<Question> questionsDatabase = new ArrayList<>();
     private List<Question> questionsInGame = new ArrayList<>();
     String[] category = { "Samtid", "Sport och fritid", "Kultur och musik", "Vetenskap & historia" };
-    int nrOfQuestionsInGame;
-    int nrOfQuestionsPerRound;
+    private int nrOfRoundsPerGame;
+    private int nrOfQuestionsPerRound;
 
     public QuestionUtil() throws FileNotFoundException, IOException {
         
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream("src/QuizkampenServer/QuestionSettings.properties"));
-            String questionsPerGameString = properties.getProperty("questionsPerGame").trim();
-            nrOfQuestionsInGame = Integer.parseInt(questionsPerGameString);
+            String questionsPerGameString = properties.getProperty("roundsPerGame").trim();
+            nrOfRoundsPerGame = Integer.parseInt(questionsPerGameString);
             String questionsPerRoundString = properties.getProperty("questionsPerRound").trim();
             nrOfQuestionsPerRound = Integer.parseInt(questionsPerRoundString);   
         }
@@ -63,33 +63,28 @@ public class QuestionUtil {
         return questionsDatabase;
     }
 
-//    public List<Question> getQuestionsInGame(int nrOfQuestionsInGame, String category) {
-//        List<Question> nullListDatabase = new ArrayList<>();
-//        for (int i = 0; i < questionsDatabase.size(); i++) {
-//            if (questionsDatabase.get(i).getQuestion() != null){
-//                if (questionsDatabase.get(i).getCategory().equalsIgnoreCase(category)){
-//                    questionsInGame.add(questionsDatabase.get(i));
-//                    questionsDatabase.get(i).setQuestionNull();
-//                    if (questionsInGame.size() == nrOfQuestionsInGame){
-//                        return questionsInGame;
-//                    }
-//                }
-//                        
-//            }
-//        }
-//        return nullListDatabase;
-//    }
-
-    public int getNrOfQuestionsInGame() {
-        return nrOfQuestionsInGame;
-    }
-
-    public int getNrOfQuestionsPerRound() {
-        return nrOfQuestionsPerRound;
+    public List<Question> getQuestionsInGame() {
+        List<Question> questionsInGame = new ArrayList<>();
+        String tempCategory = questionsDatabase.get(0).getCategory();
+        questionsInGame.add(questionsDatabase.get(0));
+        
+        for (int i = 1; i < questionsDatabase.size(); i++) {
+            if(questionsDatabase.get(i).getCategory().equals(tempCategory))
+                questionsInGame.add(questionsDatabase.get(i));      
+        }
+        return questionsInGame;
     }
 
     public String[] getCategory() {
         return category;
+    }
+    
+    public int getnrOfRoundsPerGame(){
+        return nrOfRoundsPerGame;
+    }
+    
+    public int getnrOfQuestionsPerRound(){
+        return nrOfQuestionsPerRound;
     }
     
 }
