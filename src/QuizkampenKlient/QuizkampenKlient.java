@@ -120,7 +120,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     }
     
     public void setButtons(String[] answers){
-        int index;
+        int index;  
         emptyButtons();
         nextRound.setVisible(false);
         for (int i = 0; i < 4; i++) {
