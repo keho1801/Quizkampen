@@ -25,21 +25,14 @@ public class GameController extends Thread {
     private ObjectOutputStream Xoutput;
     private BufferedReader Yinput;
     private ObjectOutputStream Youtput;
-    private QuestionUtil q;
+
     private String XstrInput;
     private String YstrInput;
     private int numberOfQuestionsPerRound;
     private int numberOfRoundsPerGame;
 
     public GameController(Player X, Player Y, Socket socketX, Socket socketY) throws IOException {
-        
-        q = new QuestionUtil();
-        q.initializeQuestionDatabase();
-        
-        numberOfQuestionsPerRound = q.getnrOfQuestionsPerRound();
-        numberOfRoundsPerGame = q.getnrOfRoundsPerGame();
-        
-        
+
         this.playerX = X;
         this.playerY = Y;
         this.Xsocket = socketX;
@@ -58,45 +51,50 @@ public class GameController extends Thread {
     @Override
     public void run() {
         try {
+
             playerX.setName(Xinput.readLine());
             playerY.setName(Yinput.readLine());
             Xoutput.writeObject(playerX);
             Youtput.writeObject(playerY);
-           
-            int o = 0;
-            while (o < numberOfRoundsPerGame) {
-                
-                q.shuffleQuestionList();
-                questionsInGame = q.getQuestionsDatabase();
-                
-                
-                for (int i = 0; i < numberOfQuestionsPerRound; i++) {
+            while (true) {
+                QuestionUtil q1 = new QuestionUtil();
+                q1.initializeQuestionDatabase();
+                q1.shuffleQuestionList();
+                numberOfQuestionsPerRound = q1.getnrOfQuestionsPerRound();
+                numberOfRoundsPerGame = q1.getnrOfRoundsPerGame();
 
-                    Xoutput.writeObject(questionsInGame.get(i));
-                    Youtput.writeObject(questionsInGame.get(i));
-
-//                    XstrInput = Xinput.readLine();
-//                    System.out.println(XstrInput);
-//                    YstrInput = Yinput.readLine();
-//                    System.out.println(YstrInput);
+                int o = 0;
+                while (o < numberOfRoundsPerGame) {
                     
-                    if ((XstrInput = Xinput.readLine()) != null && (YstrInput = Yinput.readLine()) != null) {
-                        
-                        
-                        if (questionsInGame.get(i).getAnswers()[0].equals(XstrInput)) {
-                            playerX.setScore(playerX.getScore() + 1);
-                            System.out.println(playerX.getName() + " fick en poäng");
-                        }
-                        if (questionsInGame.get(i).getAnswers()[0].equals(YstrInput)) {
-                            playerY.setScore(playerY.getScore() + 1);
-                            System.out.println(playerY.getName() + " fick en poäng");
+                    questionsInGame = q1.getQuestionsDatabase();
+                    playerX.setScorePerRound(0);
+                    playerY.setScorePerRound(0);
+                    
+
+                    for (int i = 0; i < numberOfQuestionsPerRound; i++) {
+
+                        Xoutput.writeObject(questionsInGame.get(i));
+                        Youtput.writeObject(questionsInGame.get(i));
+
+                        if ((XstrInput = Xinput.readLine()) != null && (YstrInput = Yinput.readLine()) != null) {
+
+                            if (questionsInGame.get(i).getAnswers()[0].equals(XstrInput)) {
+                                playerX.setScorePerRound(playerX.getScorePerRound() + 1);
+                                playerX.setScorePerGame(playerX.getScorePerGame() + 1);
+                                System.out.println(playerX.getName() + " fick en poäng");
+                            }
+                            if (questionsInGame.get(i).getAnswers()[0].equals(YstrInput)) {
+                                playerY.setScorePerRound(playerY.getScorePerRound() + 1);
+                                playerY.setScorePerGame(playerY.getScorePerGame() + 1);
+                                System.out.println(playerY.getName() + " fick en poäng");
+                            }
                         }
                     }
+                    System.out.println("Runda avklarad!");
+                    Xoutput.writeObject(playerY);
+                    Youtput.writeObject(playerX);
+                    o++;
                 }
-                System.out.println("Runda avklarad!");
-                Xoutput.writeObject(playerY);
-                Youtput.writeObject(playerX);
-                o++;
 
 //                if (!Xinput.readLine().equalsIgnoreCase("nytt spel") && !Yinput.readLine().equalsIgnoreCase("nytt spel")) {
 //                    break;

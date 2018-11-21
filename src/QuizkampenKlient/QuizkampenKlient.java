@@ -206,6 +206,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
           
         QuizkampenKlient q = new QuizkampenKlient();
+        System.out.println("hej");
     }
 
 }

@@ -70,13 +70,10 @@ public class QuestionUtil {
         
         for (int i = 1; i < questionsDatabase.size(); i++) {
             if(questionsDatabase.get(i).getCategory().equals(tempCategory))
-                questionsInGame.add(questionsDatabase.get(i));      
+                questionsInGame.add(questionsDatabase.get(i));
+                questionsDatabase.remove(i);
         }
         return questionsInGame;
-    }
-
-    public String[] getCategory() {
-        return category;
     }
     
     public int getnrOfRoundsPerGame(){
