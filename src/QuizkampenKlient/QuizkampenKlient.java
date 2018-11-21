@@ -20,7 +20,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Properties;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 
 public class QuizkampenKlient extends JFrame implements ActionListener{
@@ -28,7 +31,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     JPanel backgoundPanel = new JPanel();
     JPanel questionsPanel = new JPanel();
     JPanel infoPanel = new JPanel();
-    JLabel question = new JLabel();
+    JTextArea question = new JTextArea();
     JLabel category = new JLabel("Kategori");
     JButton nextRound = new JButton("Nästa fråga");
     JButton[] buttons = new JButton[4];
@@ -45,8 +48,11 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     Properties properties = new Properties();
     ObjectInputStream in;
     String fromUser;
+    String fName;
+    int fSize;
+    String icon;
     
-    public QuizkampenKlient(){
+    public QuizkampenKlient() throws IOException{
         buttons[0] = button1;
         buttons[1] = button2;
         buttons[2] = button3;
@@ -60,23 +66,54 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
             e.printStackTrace();
         }
 
-        String fName = properties.getProperty("fontName","Verdana");
-        int fSize = Integer.parseInt(properties.getProperty("fontSize", "24"));
-        
+        fName = properties.getProperty("fontName","Verdana");
+        fSize = Integer.parseInt(properties.getProperty("fontSize", "24"));
+        backgoundPanel.setLayout(new BorderLayout());
 
+        
+        add(backgoundPanel);
+        setTitle("Quizkampen");
+        
+        setSize(600, 570);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setWelcomeLayout();            
+
+        
+        try {
+            Socket socketToServer = new Socket(InetAddress.getByName("172.20.201.127"), 12345);
+            out = new PrintWriter(socketToServer.getOutputStream(), true);
+            in = new ObjectInputStream(socketToServer.getInputStream());
+  
+            out.println(fromUser);
+            runWhile();
+            Thread.sleep(1000);
+//            runWhile();
+            
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    public void setBasicLayout(){
         question.setFont(new Font(fName, Font.PLAIN, fSize));
         question.setForeground(Color.black);
         question.setBackground(Color.WHITE);
-        backgoundPanel.setLayout(new BorderLayout());
-        questionsPanel.setLayout(new GridLayout(2, 2));
+        infoPanel.setLayout(new GridLayout(1, 2));
         questionsPanel.setLayout(new FlowLayout());
         backgoundPanel.add(question, NORTH);
-        question.setPreferredSize(new Dimension(550, 300));
+        question.setEditable(false);
+        question.setLineWrap(true);
+        question.setPreferredSize(new Dimension(550, 150));
+        question.setMargin(new Insets(30, 30, 30, 30));
+        question.setWrapStyleWord(true);
         backgoundPanel.add(questionsPanel, CENTER);
         backgoundPanel.add(infoPanel, SOUTH);
-        infoPanel.add(category);
+        infoPanel.add(category, 0, 0);
+        infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
         category.setPreferredSize(new Dimension(350, 50));
-        infoPanel.add(nextRound);
+        infoPanel.add(nextRound, 0, 1);
         nextRound.setPreferredSize(new Dimension(200, 50));
         nextRound.addActionListener(new ActionListener() {
             @Override
@@ -96,27 +133,103 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         button2.addActionListener(this);
         button3.addActionListener(this);
         button4.addActionListener(this);
-        add(backgoundPanel);
+        backgoundPanel.setBackground(Color.WHITE);
+    }
+    
+    public void setWelcomeLayout() throws IOException{
+        question.setFont(new Font(fName, Font.PLAIN, fSize));
+        question.setForeground(Color.black);
+        question.setBackground(Color.WHITE);
+        infoPanel.setLayout(new GridLayout(1, 2));
+        questionsPanel.setLayout(new FlowLayout());
+        backgoundPanel.add(question, NORTH);
+        question.setEditable(false);
+        question.setLineWrap(true);
+        question.setPreferredSize(new Dimension(550, 150));
+        question.setMargin(new Insets(30, 30, 30, 30));
+        question.setWrapStyleWord(true);
+        question.setText("Välkommen " + fromUser + "\nVälj en avatar");
+        backgoundPanel.add(questionsPanel, CENTER);
+        backgoundPanel.add(infoPanel, SOUTH);
+        infoPanel.add(category, 0, 0);
+        infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
+        category.setPreferredSize(new Dimension(350, 50));
+        infoPanel.add(nextRound, 0, 1);
+        category.setText("Väntar på motståndare");
+        nextRound.setText("Starta spel");
+        nextRound.setVisible(false);
+        nextRound.setPreferredSize(new Dimension(200, 50));
+        nextRound.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                button1.setIcon(null);
+                button2.setIcon(null);
+                
+                runWhile();
+            }
+        });
+        questionsPanel.add(button1);
+        questionsPanel.add(button2);
+        button1.setPreferredSize(new Dimension(270, 300));
+        button2.setPreferredSize(new Dimension(270, 300));
+        button1.setBackground(Color.WHITE);
+        button2.setBackground(Color.WHITE);
+
+        button1.setIcon(new ImageIcon("src/Models/avatar_female.jpg"));
+        button2.setIcon(new ImageIcon("src/Models/avatar_male.jpg"));
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                icon = "src/Models/avatar_female.jpg";
+            }
+        });
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                icon = "src/Models/avatar_male.jpg";
+            }
+        });
+    }
+    
+    public void setGameLayout(){
+        question.setFont(new Font(fName, Font.PLAIN, fSize));
+        question.setForeground(Color.black);
+        question.setBackground(Color.WHITE);
+        infoPanel.setLayout(new GridLayout(1, 2));
+        questionsPanel.setLayout(new FlowLayout());
+        backgoundPanel.add(question, NORTH);
+        question.setEditable(false);
+        question.setLineWrap(true);
+        question.setPreferredSize(new Dimension(550, 150));
+        question.setMargin(new Insets(30, 30, 30, 30));
+        question.setWrapStyleWord(true);
+        backgoundPanel.add(questionsPanel, CENTER);
+        backgoundPanel.add(infoPanel, SOUTH);
+        infoPanel.add(category, 0, 0);
+        infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
+        category.setPreferredSize(new Dimension(350, 50));
+        infoPanel.add(nextRound, 0, 1);
+        nextRound.setPreferredSize(new Dimension(200, 50));       
+        nextRound.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                runWhile();
+            }
+        });
+        questionsPanel.add(button1);
+        questionsPanel.add(button2);
+        questionsPanel.add(button3);
+        questionsPanel.add(button4);
+        button1.setPreferredSize(new Dimension(270, 150));
+        button2.setPreferredSize(new Dimension(270, 150));
+        button3.setPreferredSize(new Dimension(270, 150));
+        button4.setPreferredSize(new Dimension(270, 150));
+        button1.addActionListener(this);
+        button2.addActionListener(this);
+        button3.addActionListener(this);
+        button4.addActionListener(this);
         
-        setSize(600, 760);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-        
-        try {
-            Socket socketToServer = new Socket(InetAddress.getLocalHost(), 12345);
-            out = new PrintWriter(socketToServer.getOutputStream(), true);
-            in = new ObjectInputStream(socketToServer.getInputStream());
-  
-            out.println(fromUser);
-            runWhile();
-            Thread.sleep(1000);
-//            runWhile();
-            
-        } catch (Exception e){
-            e.printStackTrace();
-        }
     }
     
     public void setButtons(String[] answers){
@@ -187,12 +300,14 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
                     question.setText(questionFromServer.getQuestion());
                     setButtons(questionFromServer.getAnswers());
                     category.setText(questionFromServer.getCategory());
+                    setGameLayout();
                 }
             } else if (fromServer instanceof Player) {
                 playerFromServer = ((Player) fromServer);
-                question.setText(playerFromServer.getName());
-//                playerFromServer = ((Player) in.readObject());
-//                nextRound.setText(playerFromServer.getName());
+                //question.setText(playerFromServer.getName());
+                category.setText("Kopplad till motståndare");
+                nextRound.setVisible(true);
+                
             } else if (fromServer instanceof String) {
                 question.setText((String) fromServer);
             }
