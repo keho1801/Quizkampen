@@ -3,17 +3,15 @@ package Models;
 import QuizkampenServer.GameController;
 import java.io.Serializable;
 
-public class Player implements Serializable{
+public class Player implements Serializable {
     static final long serialVersionUID = 43L;
     private String name;
     private Player opponent;
     private int score;
     private int wins;
-    private GameController game;
     
 public Player(String name) {
     this.name = name;
-    this.game = game;
 }
 
     public String getPlayerName() {
@@ -43,11 +41,13 @@ public Player(String name) {
     public Player getOpponent() {
         return opponent;
     }
-    public void setGame(GameController g){
-        this.game=g;
-    }
+    
     public void setName(String name){
         this.name = name;  
+    }
+    
+    public String getName(){
+        return name;
     }
     
 }
