@@ -7,7 +7,8 @@ public class Player implements Serializable {
     static final long serialVersionUID = 43L;
     private String name;
     private Player opponent;
-    private int score;
+    private int scorePerGame;
+    private int scorePerRound;
     private int wins;
     
 public Player(String name) {
@@ -18,12 +19,12 @@ public Player(String name) {
         return name;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setScorePerGame(int score) {
+        this.scorePerGame = score;
     }
 
-    public int getScore() {
-        return score;
+    public int getScorePerGame() {
+        return scorePerGame;
     }
 
     public int getWins() {
@@ -49,5 +50,12 @@ public Player(String name) {
     public String getName(){
         return name;
     }
-    
+    public void setScorePerRound(int score){
+        this.scorePerRound = score ;
+        
+    }
+    public int getScorePerRound(){
+        return scorePerRound;
+        
+    }
 }
