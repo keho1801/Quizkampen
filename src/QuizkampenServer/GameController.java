@@ -35,10 +35,10 @@ public class GameController extends Thread {
         
         q = new QuestionUtil();
         q.initializeQuestionDatabase();
-        q.shuffleQuestionList();
+        
         numberOfQuestionsPerRound = q.getnrOfQuestionsPerRound();
         numberOfRoundsPerGame = q.getnrOfRoundsPerGame();
-        questionsInGame = q.getQuestionsDatabase();
+        
         
         this.playerX = X;
         this.playerY = Y;
@@ -64,7 +64,11 @@ public class GameController extends Thread {
             Youtput.writeObject(playerY);
            
             int o = 0;
-            while (o <= numberOfRoundsPerGame) {
+            while (o < numberOfRoundsPerGame) {
+                
+                q.shuffleQuestionList();
+                questionsInGame = q.getQuestionsDatabase();
+                
                 
                 for (int i = 0; i < numberOfQuestionsPerRound; i++) {
 
@@ -92,6 +96,7 @@ public class GameController extends Thread {
                 System.out.println("Runda avklarad!");
                 Xoutput.writeObject(playerY);
                 Youtput.writeObject(playerX);
+                o++;
 
 //                if (!Xinput.readLine().equalsIgnoreCase("nytt spel") && !Yinput.readLine().equalsIgnoreCase("nytt spel")) {
 //                    break;
