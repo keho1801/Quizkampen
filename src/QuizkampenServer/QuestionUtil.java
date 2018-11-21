@@ -69,9 +69,10 @@ public class QuestionUtil {
         questionsInGame.add(questionsDatabase.get(0));
         
         for (int i = 1; i < questionsDatabase.size(); i++) {
-            if(questionsDatabase.get(i).getCategory().equals(tempCategory))
+            if(questionsDatabase.get(i).getCategory().equals(questionsDatabase.get(0).getCategory())){
                 questionsInGame.add(questionsDatabase.get(i));
                 questionsDatabase.remove(i);
+            }
         }
         return questionsInGame;
     }

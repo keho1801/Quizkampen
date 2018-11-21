@@ -105,7 +105,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         
         
         try {
-            Socket socketToServer = new Socket(InetAddress.getByName("172.20.201.127"), 12345);
+            Socket socketToServer = new Socket(InetAddress.getLocalHost(), 12345);
             out = new PrintWriter(socketToServer.getOutputStream(), true);
             in = new ObjectInputStream(socketToServer.getInputStream());
   
@@ -206,7 +206,6 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
           
         QuizkampenKlient q = new QuizkampenKlient();
-        System.out.println("hej");
     }
 
 }

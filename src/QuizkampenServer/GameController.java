@@ -65,8 +65,9 @@ public class GameController extends Thread {
 
                 int o = 0;
                 while (o < numberOfRoundsPerGame) {
-                    
-                    questionsInGame = q1.getQuestionsDatabase();
+                    questionsInGame = new ArrayList<>();
+                    q1.shuffleQuestionList();
+                    questionsInGame = q1.getQuestionsInGame();
                     playerX.setScorePerRound(0);
                     playerY.setScorePerRound(0);
                     
@@ -96,9 +97,9 @@ public class GameController extends Thread {
                     o++;
                 }
 
-//                if (!Xinput.readLine().equalsIgnoreCase("nytt spel") && !Yinput.readLine().equalsIgnoreCase("nytt spel")) {
-//                    break;
-//                }
+                if(!Xinput.readLine().equalsIgnoreCase("nytt spel") && !Yinput.readLine().equalsIgnoreCase("nytt spel")) {
+                    break;
+                }
             }
         } catch (IOException ex) {
             System.out.println("något gick fel");
