@@ -3,26 +3,13 @@ package QuizkampenKlient;
 import Models.Player;
 import Models.Question;
 import java.awt.*;
-import static java.awt.BorderLayout.CENTER;
-import static java.awt.BorderLayout.NORTH;
-import static java.awt.BorderLayout.SOUTH;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
+import static java.awt.BorderLayout.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.*;
 import java.net.UnknownHostException;
-import java.util.Properties;
-import java.util.Random;
-import javax.imageio.ImageIO;
+import java.util.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 
@@ -70,7 +57,16 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         fSize = Integer.parseInt(properties.getProperty("fontSize", "24"));
         backgoundPanel.setLayout(new BorderLayout());
 
-        
+        nextRound.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if (button1 != null){
+                    button1.setIcon(null);
+                    button2.setIcon(null);
+                }
+                runWhile();
+            }
+        });
         add(backgoundPanel);
         setTitle("Quizkampen");
         
@@ -82,14 +78,12 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
 
         
         try {
-            Socket socketToServer = new Socket(InetAddress.getByName("172.20.201.127"), 12345);
+            Socket socketToServer = new Socket(InetAddress.getLocalHost(), 12345);
             out = new PrintWriter(socketToServer.getOutputStream(), true);
             in = new ObjectInputStream(socketToServer.getInputStream());
   
             out.println(fromUser);
             runWhile();
-            Thread.sleep(1000);
-//            runWhile();
             
         } catch (Exception e){
             e.printStackTrace();
@@ -159,15 +153,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         nextRound.setText("Starta spel");
         nextRound.setVisible(false);
         nextRound.setPreferredSize(new Dimension(200, 50));
-        nextRound.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                button1.setIcon(null);
-                button2.setIcon(null);
-                
-                runWhile();
-            }
-        });
+        
         questionsPanel.add(button1);
         questionsPanel.add(button2);
         button1.setPreferredSize(new Dimension(270, 300));
@@ -209,13 +195,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
         category.setPreferredSize(new Dimension(350, 50));
         infoPanel.add(nextRound, 0, 1);
-        nextRound.setPreferredSize(new Dimension(200, 50));       
-        nextRound.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                runWhile();
-            }
-        });
+        nextRound.setPreferredSize(new Dimension(200, 50));
         questionsPanel.add(button1);
         questionsPanel.add(button2);
         questionsPanel.add(button3);
@@ -229,7 +209,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         button3.addActionListener(this);
         button4.addActionListener(this);
         
-        
+        nextRound.setText("Nästa fråga");
     }
     
     public void setButtons(String[] answers){
@@ -294,22 +274,17 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
             if (fromServer instanceof Question) {
                 
                 questionFromServer = (Question) fromServer;
-                if (questionFromServer.getQuestion() == null){
-                    question.setText("Välkommen " + fromUser);
-                } else {
+                
+                    setGameLayout();
                     question.setText(questionFromServer.getQuestion());
                     setButtons(questionFromServer.getAnswers());
                     category.setText(questionFromServer.getCategory());
-                    setGameLayout();
-                }
+                    
             } else if (fromServer instanceof Player) {
                 playerFromServer = ((Player) fromServer);
-                //question.setText(playerFromServer.getName());
                 category.setText("Kopplad till motståndare");
                 nextRound.setVisible(true);
                 
-            } else if (fromServer instanceof String) {
-                question.setText((String) fromServer);
             }
              
         }catch (EOFException e) {
