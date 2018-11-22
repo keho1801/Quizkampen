@@ -13,7 +13,7 @@ public class Timer extends Thread {
     @Override
     public void run() {
         
-        while(timeToAnswer > second) {  
+        while(timeToAnswer >= second) {  
             System.out.println("Tid kvar: " + timeToAnswer);
             try {
                 Thread.sleep(second);
