@@ -82,7 +82,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
 
         
         try {
-            Socket socketToServer = new Socket(InetAddress.getByName("172.20.201.127"), 12345);
+            Socket socketToServer = new Socket(InetAddress.getByName("172.20.202.89"), 12345);
             out = new PrintWriter(socketToServer.getOutputStream(), true);
             in = new ObjectInputStream(socketToServer.getInputStream());
   
@@ -192,6 +192,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     }
     
     public void setGameLayout(){
+        
         question.setFont(new Font(fName, Font.PLAIN, fSize));
         question.setForeground(Color.black);
         question.setBackground(Color.WHITE);
@@ -297,10 +298,12 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
                 if (questionFromServer.getQuestion() == null){
                     question.setText("Välkommen " + fromUser);
                 } else {
+                    
+                    setGameLayout();
                     question.setText(questionFromServer.getQuestion());
                     setButtons(questionFromServer.getAnswers());
                     category.setText(questionFromServer.getCategory());
-                    setGameLayout();
+                    
                 }
             } else if (fromServer instanceof Player) {
                 playerFromServer = ((Player) fromServer);
