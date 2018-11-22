@@ -9,12 +9,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class GameController extends Thread {
 
@@ -36,7 +33,7 @@ public class GameController extends Thread {
     private List<Integer> scoreList;
 
     public GameController(Player X, Player Y, Socket socketX, Socket socketY) throws IOException {
-
+        
         this.playerX = X;
         this.playerY = Y;
         this.Xsocket = socketX;
@@ -69,20 +66,34 @@ public class GameController extends Thread {
         }
 
     }
+    public void writeToFile(Player player){
+        try(FileWriter writer = new FileWriter(filePath,true);){
+            String print;
+            print = player.getName() + ": " + player.getWins()+"\n";
+            writer.write(print);
+            writer.close();
+
+            }catch(Exception e){
+                System.out.println("Kunde inste skriva till filen");
+            }
+    }
 
     @Override
     public void run() {
         try {
 
-            //if xnamn.equals(namn i filen).xscore = namn i filen score
-            playerX.setName(Xinput.readLine());
-            playerY.setName(Yinput.readLine());
-
+            //player x och y får inte ha samma namn
+            while(Xinput.readLine()!= Yinput.readLine()){
+                playerX.setName(Xinput.readLine());
+                playerY.setName(Yinput.readLine());
+            //ifall namnet kenny finns i namelist så får vi wins i samma index för player.
+            //namnet kommer adderas därför kollar vi sista indexens poäng när vi skriver ut.
             if (nameList.contains(playerX.getName().toLowerCase())) {
-                playerX.setWins(scoreList.get(nameList.indexOf(playerX.getName())));
+                playerX.setWins(scoreList.get(nameList.lastIndexOf(playerX.getName())));
             }
             if (nameList.contains(playerY.getName().toLowerCase())) {
-                playerY.setWins(scoreList.get(nameList.indexOf(playerY.getName())));
+                playerY.setWins(scoreList.get(nameList.lastIndexOf(playerY.getName())));
+            }
             }
             Xoutput.writeObject(playerX);
             Youtput.writeObject(playerY);
@@ -132,16 +143,14 @@ public class GameController extends Thread {
                 if (playerY.getScorePerGame() > playerX.getScorePerGame()) {
                     playerY.setWins(playerY.getWins() + 1);
                 }
+                    writeToFile(playerX);
+                    writeToFile(playerY);
+                    
 
                 if (!Xinput.readLine().equalsIgnoreCase("nytt spel") && !Yinput.readLine().equalsIgnoreCase("nytt spel")) {
-                    try{
-                    FileWriter writer = new FileWriter(filePath);
-                    
-                    }catch(Exception e){
-                        System.out.println("Kunde inste skriva till filen");
-                    }
                     break;
                 }
+
             }
         } catch (IOException ex) {
             System.out.println("något gick fel");
