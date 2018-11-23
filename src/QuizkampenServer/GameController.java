@@ -51,7 +51,8 @@ public class GameController extends Thread {
     @Override
     public void run() {
         try {
-
+            playerX.setScorePerGame(0);
+            playerY.setScorePerGame(0);
             playerX.setName(Xinput.readLine());
             playerY.setName(Yinput.readLine());
             Xoutput.writeObject(playerX);
@@ -68,6 +69,7 @@ public class GameController extends Thread {
                     questionsInGame = new ArrayList<>();
                     q1.shuffleQuestionList();
                     questionsInGame = q1.getQuestionsInGame();
+                    
                     playerX.setScorePerRound(0);
                     playerY.setScorePerRound(0);
                     
@@ -82,18 +84,24 @@ public class GameController extends Thread {
                             if (questionsInGame.get(i).getAnswers()[0].equals(XstrInput)) {
                                 playerX.setScorePerRound(playerX.getScorePerRound() + 1);
                                 playerX.setScorePerGame(playerX.getScorePerGame() + 1);
-                                System.out.println(playerX.getName() + " fick en poäng");
+                                System.out.println(playerX.getName() + " fick en poäng"+ " "+ playerX.getScorePerRound() + " "+playerX.getScorePerGame());
                             }
                             if (questionsInGame.get(i).getAnswers()[0].equals(YstrInput)) {
                                 playerY.setScorePerRound(playerY.getScorePerRound() + 1);
                                 playerY.setScorePerGame(playerY.getScorePerGame() + 1);
-                                System.out.println(playerY.getName() + " fick en poäng");
+                                System.out.println(playerY.getName() + " fick en poäng" + " "+ playerY.getScorePerRound() + " "+playerY.getScorePerGame());
                             }
                         }
                     }
                     System.out.println("Runda avklarad!");
+                    System.out.println("Skickar resultat til klient, spelare X"+ " "+ playerX.getScorePerRound() + " "+playerX.getScorePerGame());
+                    System.out.println("Skickar resultat til klient, spelare y"+ " "+ playerY.getScorePerRound() + " "+playerY.getScorePerGame());
                     Xoutput.writeObject(playerY);
                     Youtput.writeObject(playerX);
+                    
+                    playerY.setName("Y");
+                    playerX.setName("X");
+
                     o++;
                 }
 

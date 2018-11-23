@@ -54,7 +54,10 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         buttons[2] = button3;
         buttons[3] = button4;
         fromUser = JOptionPane.showInputDialog("Ange namn: ");
-        
+        button1.setOpaque(true);
+        button2.setOpaque(true);
+        button3.setOpaque(true);
+        button4.setOpaque(true);
         
         try {
             properties.load(new FileInputStream("src/QuizkampenKlient/ClientSettings.properties"));
@@ -358,7 +361,9 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         
     public void runWhile(){
         try {
+            System.out.println("runWhile");
             fromServer = in.readObject();
+            System.out.println("Object from server has been read " + fromServer.getClass());
             if (fromServer instanceof Question) {
                 questionFromServer = (Question) fromServer;
                 
@@ -367,12 +372,15 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
                 category.setText(questionFromServer.getCategory());
                 setGameLayout();    
             } else if (fromServer instanceof Player) {
+                System.out.println("Player received "+ ((Player) fromServer).getScorePerRound()+" "+((Player) fromServer).getScorePerGame()+" " +((Player)fromServer).getName());
                 if (roundNumber == 0){
+                    System.out.println("round 0");
                     player = ((Player) fromServer);
                     category.setText("Kopplad till motståndare");
                     nextRound.setVisible(true);
                     roundNumber++;
                 } else if (roundNumber >= 1){
+                    System.out.println("round "+roundNumber);
                     opponent = ((Player) fromServer);
                     System.out.println(opponent.getScorePerGame());
                     System.out.println(opponent.getScorePerRound());

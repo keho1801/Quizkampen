@@ -18,9 +18,6 @@ public class QuizkampenServer {
                 Player playerY = new Player("PlayerY");
                 
                 GameController game = new GameController(playerX, playerY,serverSocket.accept(),serverSocket.accept());
-                
-                playerX.setOpponent(playerY);
-                playerY.setOpponent(playerX);
                 game.start();
                 
             }
