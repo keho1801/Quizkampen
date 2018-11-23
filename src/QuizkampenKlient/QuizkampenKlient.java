@@ -16,7 +16,8 @@ import javax.swing.border.EmptyBorder;
 public class QuizkampenKlient extends JFrame implements ActionListener{
     
     JPanel backgroundPanel = new JPanel();
-    JPanel questionsPanel = new JPanel();
+    JPanel questionPanel = new JPanel();
+    JPanel answersPanel = new JPanel();
     JPanel infoPanel = new JPanel();
     JPanel player1 = new JPanel();
     JPanel player2 = new JPanel();
@@ -30,6 +31,8 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     JButton button2 = new JButton("");
     JButton button3 = new JButton("");
     JButton button4 = new JButton("");
+    JButton iconFemale = new JButton();
+    JButton iconMale = new JButton();
     
     Object fromServer;
     Question questionFromServer;
@@ -66,6 +69,11 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         nextRound.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                if (nextRound.getText().equals("Nytt spel")){
+                    out.println("nytt spel");
+                    player.setScorePerGame(0);
+                    roundNumber = 1;
+                }
                 if (button1 != null){
                     button1.setIcon(null);
                     button2.setIcon(null);
@@ -73,6 +81,10 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
                 runWhile();
             }
         });
+        button1.addActionListener(this);
+        button2.addActionListener(this);
+        button3.addActionListener(this);
+        button4.addActionListener(this);
         add(backgroundPanel);
         setTitle("Quizkampen");
         
@@ -101,14 +113,15 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         question.setForeground(Color.black);
         question.setBackground(Color.WHITE);
         infoPanel.setLayout(new GridLayout(1, 2));
-        questionsPanel.setLayout(new FlowLayout());
-        backgroundPanel.add(question, NORTH);
-        question.setEditable(false);
+        answersPanel.setLayout(new FlowLayout());
+        questionPanel.setLayout(new BorderLayout());
+        backgroundPanel.add(questionPanel, NORTH);
+        questionPanel.add(question, CENTER);        question.setEditable(false);
         question.setLineWrap(true);
         question.setPreferredSize(new Dimension(550, 150));
         question.setMargin(new Insets(30, 30, 30, 30));
         question.setWrapStyleWord(true);
-        backgroundPanel.add(questionsPanel, CENTER);
+        backgroundPanel.add(answersPanel, CENTER);
         backgroundPanel.add(infoPanel, SOUTH);
         infoPanel.add(category, 0, 0);
         infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
@@ -121,10 +134,10 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
                 runWhile();
             }
         });
-        questionsPanel.add(button1);
-        questionsPanel.add(button2);
-        questionsPanel.add(button3);
-        questionsPanel.add(button4);
+        answersPanel.add(button1);
+        answersPanel.add(button2);
+        answersPanel.add(button3);
+        answersPanel.add(button4);
         button1.setPreferredSize(new Dimension(270, 150));
         button2.setPreferredSize(new Dimension(270, 150));
         button3.setPreferredSize(new Dimension(270, 150));
@@ -140,16 +153,18 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         question.setFont(new Font(fName, Font.PLAIN, fSize));
         question.setForeground(Color.black);
         question.setBackground(Color.WHITE);
-        infoPanel.setLayout(new GridLayout(1, 3));
-        questionsPanel.setLayout(new FlowLayout());
-        backgroundPanel.add(question, NORTH);
+        infoPanel.setLayout(new GridLayout(1, 2));
+        answersPanel.setLayout(new FlowLayout());
+        questionPanel.setLayout(new BorderLayout());
+        backgroundPanel.add(questionPanel, NORTH);
+        questionPanel.add(question, CENTER);
         question.setEditable(false);
         question.setLineWrap(true);
         question.setPreferredSize(new Dimension(550, 150));
         question.setMargin(new Insets(30, 30, 30, 30));
         question.setWrapStyleWord(true);
         question.setText("Välkommen " + fromUser + "\nVälj en avatar");
-        backgroundPanel.add(questionsPanel, CENTER);
+        backgroundPanel.add(answersPanel, CENTER);
         backgroundPanel.add(infoPanel, SOUTH);
         infoPanel.add(category, 0, 0);
         infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
@@ -174,22 +189,22 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         Timer t = new Timer(3000, t1, t2, t3);
         t.start();
         
-        questionsPanel.add(button1);
-        questionsPanel.add(button2);
-        button1.setPreferredSize(new Dimension(270, 300));
-        button2.setPreferredSize(new Dimension(270, 300));
-        button1.setBackground(Color.WHITE);
-        button2.setBackground(Color.WHITE);
+        answersPanel.add(iconFemale);
+        answersPanel.add(iconMale);
+        iconFemale.setPreferredSize(new Dimension(270, 300));
+        iconMale.setPreferredSize(new Dimension(270, 300));
+        iconFemale.setBackground(Color.WHITE);
+        iconMale.setBackground(Color.WHITE);
 
-        button1.setIcon(new ImageIcon("src/Models/avatar_female.jpg"));
-        button2.setIcon(new ImageIcon("src/Models/avatar_male.jpg"));
-        button1.addActionListener(new ActionListener() {
+        iconFemale.setIcon(new ImageIcon("src/Models/avatar_female.jpg"));
+        iconMale.setIcon(new ImageIcon("src/Models/avatar_male.jpg"));
+        iconFemale.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 icon = "src/Models/avatar_female.jpg";
             }
         });
-        button2.addActionListener(new ActionListener() {
+        iconMale.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 icon = "src/Models/avatar_male.jpg";
@@ -200,38 +215,40 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     public void setGameLayout(){
         backgroundPanel.remove(player1);
         backgroundPanel.remove(player2);
+        answersPanel.remove(iconFemale);
+        answersPanel.remove(iconMale);
         question.setFont(new Font(fName, Font.PLAIN, fSize));
         question.setForeground(Color.black);
         question.setBackground(Color.WHITE);
         infoPanel.setLayout(new GridLayout(1, 2));
-        questionsPanel.setLayout(new FlowLayout());
-        backgroundPanel.add(question, NORTH);
-        question.setEditable(false);
+        answersPanel.setLayout(new FlowLayout());
+        questionPanel.setLayout(new BorderLayout());
+        backgroundPanel.add(questionPanel, NORTH);
+        questionPanel.add(question, CENTER);        question.setEditable(false);
         question.setLineWrap(true);
         question.setPreferredSize(new Dimension(550, 150));
         question.setMargin(new Insets(30, 30, 30, 30));
         question.setWrapStyleWord(true);
-        backgroundPanel.add(questionsPanel, CENTER);
+        backgroundPanel.add(answersPanel, CENTER);
         backgroundPanel.add(infoPanel, SOUTH);
         infoPanel.add(category, 0, 0);
         infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
         category.setPreferredSize(new Dimension(350, 50));
         infoPanel.add(nextRound, 0, 1);
         nextRound.setPreferredSize(new Dimension(200, 50));
-        questionsPanel.add(button1);
-        questionsPanel.add(button2);
-        questionsPanel.add(button3);
-        questionsPanel.add(button4);
+        answersPanel.add(button1);
+        answersPanel.add(button2);
+        answersPanel.add(button3);
+        answersPanel.add(button4);
         button1.setPreferredSize(new Dimension(270, 150));
         button2.setPreferredSize(new Dimension(270, 150));
         button3.setPreferredSize(new Dimension(270, 150));
         button4.setPreferredSize(new Dimension(270, 150));
-        button1.addActionListener(this);
-        button2.addActionListener(this);
-        button3.addActionListener(this);
-        button4.addActionListener(this);
+        
         
         nextRound.setText("Nästa fråga");
+        repaint();
+        revalidate();
     }
     
     public void setRoundLayout(){
@@ -239,8 +256,9 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         question.setForeground(Color.black);
         question.setBackground(Color.WHITE);
         infoPanel.setLayout(new GridLayout(1, 2));
-        backgroundPanel.add(question, NORTH);
-        question.setEditable(false);
+        questionPanel.setLayout(new BorderLayout());
+        backgroundPanel.add(questionPanel, NORTH);
+        questionPanel.add(question, CENTER);        question.setEditable(false);
         question.setLineWrap(true);
         question.setPreferredSize(new Dimension(550, 150));
         question.setMargin(new Insets(30, 30, 30, 30));
@@ -252,28 +270,44 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         infoPanel.add(nextRound, 0, 1);
         nextRound.setPreferredSize(new Dimension(200, 50));
         backgroundPanel.setBackground(Color.WHITE);
-        backgroundPanel.remove(questionsPanel);
-        backgroundPanel.remove(question);
+        backgroundPanel.remove(answersPanel);
+        backgroundPanel.remove(questionPanel);
         
         player1.setLayout(new FlowLayout());
         player2.setLayout(new FlowLayout());
         backgroundPanel.add(player1, NORTH);
         backgroundPanel.add(player2, CENTER);
-        player1.add(button1);
-        button1.setIcon(new ImageIcon(icon));
-        button1.setPreferredSize(new Dimension(200, 200));
+        player1.add(iconFemale);
+        iconFemale.setIcon(new ImageIcon(icon));
+        iconFemale.setPreferredSize(new Dimension(200, 200));
         player1Text.setPreferredSize(new Dimension(200, 200));
         player1.add(player1Text);
-        player1Text.setText(player.getName() + "\nPoäng denna runda: " + player.getScorePerRound());
         
-        player2.add(button2);
-        button2.setIcon(new ImageIcon("src/Models/avatar_female.jpg"));
-        button2.setPreferredSize(new Dimension(200, 200));
+        player2.add(iconMale);
+        iconMale.setIcon(new ImageIcon("src/Models/avatar_female.jpg"));
+        iconMale.setPreferredSize(new Dimension(200, 200));
         player2Text.setPreferredSize(new Dimension(200, 200));
         player2.add(player2Text);
-        player2Text.setText(opponent.getName() + "\nPoäng denna runda: " + opponent.getScorePerRound());
         
-        nextRound.setText("Starta nästa runda");
+        
+        if (roundNumber == 1){
+            player1Text.setText(player.getName() + "\nPoäng denna runda: " + player.getScorePerRound());
+            player2Text.setText(opponent.getName() + "\nPoäng denna runda: " + opponent.getScorePerRound());
+            nextRound.setText("Starta nästa runda");
+            roundNumber++;
+        } else if (roundNumber == 2){
+            player1Text.setText(player.getName() + "\nPoäng denna runda: " + player.getScorePerRound() 
+                    + "\nPoäng detta spel: " + player.getScorePerGame());
+            player2Text.setText(opponent.getName() + "\nPoäng denna runda: " + opponent.getScorePerRound() 
+                    + "\nPoäng detta spel: " + opponent.getScorePerGame());
+            
+            nextRound.setText("Nytt spel");
+            roundNumber = 0;
+        }
+        
+        
+        repaint();
+        revalidate();
     }
     
     public void setButtons(String[] answers){
@@ -328,9 +362,11 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
             ((JButton) event.getSource()).setBackground(Color.red);
         } else {
             player.setScorePerRound(player.getScorePerRound() + 1);
+            player.setScorePerGame(player.getScorePerGame() + 1);
         }
         
         out.println(((JButton) event.getSource()).getText());
+        System.out.println(((JButton) event.getSource()).getText());
         nextRound.setVisible(true);
     }
         
@@ -338,30 +374,25 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         try {
             fromServer = in.readObject();
             if (fromServer instanceof Question) {
-                
                 questionFromServer = (Question) fromServer;
                 
-                    setGameLayout();
-                    question.setText(questionFromServer.getQuestion());
-                    setButtons(questionFromServer.getAnswers());
-                    category.setText(questionFromServer.getCategory());
-                    
+                question.setText(questionFromServer.getQuestion());
+                setButtons(questionFromServer.getAnswers());
+                category.setText(questionFromServer.getCategory());
+                setGameLayout();    
             } else if (fromServer instanceof Player) {
                 if (roundNumber == 0){
                     player = ((Player) fromServer);
                     category.setText("Kopplad till motståndare");
                     nextRound.setVisible(true);
                     roundNumber++;
-                } else if (roundNumber == 1){
+                } else if (roundNumber >= 1){
                     opponent = ((Player) fromServer);
+                    System.out.println(opponent.getScorePerGame());
+                    System.out.println(opponent.getScorePerRound());
                     setRoundLayout();
-                    roundNumber++;
-                } else if (roundNumber == 2){
                     player.setScorePerRound(0);
-                    opponent = ((Player) fromServer);
-                    setRoundLayout();
-                    roundNumber = 0;
-                } 
+                }  
             }
         }catch (EOFException e) {
             e.printStackTrace();
