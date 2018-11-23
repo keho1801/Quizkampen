@@ -33,7 +33,7 @@ public class GameController extends Thread {
     private List<Integer> scoreList;
 
     public GameController(Player X, Player Y, Socket socketX, Socket socketY) throws IOException {
-        
+
         this.playerX = X;
         this.playerY = Y;
         this.Xsocket = socketX;
@@ -61,31 +61,41 @@ public class GameController extends Thread {
                 nameList.add(tempName);
                 scoreList.add(tempScore);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Kunde inte läsa från filen");
         }
 
     }
-    public void writeToFile(Player player){
-        try(FileWriter writer = new FileWriter(filePath,true);){
+
+    public void writeToFile(Player player) {
+        try (FileWriter writer = new FileWriter(filePath, true);) {
             String print;
-            print = player.getName() + ": " + player.getWins()+"\n";
+            print = player.getName() + ": " + player.getWins() + "\n";
             writer.write(print);
             writer.close();
 
-            }catch(Exception e){
-                System.out.println("Kunde inste skriva till filen");
-            }
+        } catch (Exception e) {
+            System.out.println("Kunde inste skriva till filen");
+        }
     }
 
     @Override
     public void run() {
         try {
+            String xName = Xinput.readLine();
+            String yName = Yinput.readLine();
 
             //player x och y får inte ha samma namn
-            while(Xinput.readLine()!= Yinput.readLine()){
-                playerX.setName(Xinput.readLine());
-                playerY.setName(Yinput.readLine());
+            while ((xName.equals(yName))) {
+                playerX.setName("");
+                playerY.setName("");
+                Xoutput.writeObject(playerX);
+                Youtput.writeObject(playerY);
+                xName = Xinput.readLine();
+                yName = Yinput.readLine();
+            }
+            playerX.setName(xName);
+            playerY.setName(yName);
             //ifall namnet kenny finns i namelist så får vi wins i samma index för player.
             //namnet kommer adderas därför kollar vi sista indexens poäng när vi skriver ut.
             if (nameList.contains(playerX.getName().toLowerCase())) {
@@ -94,9 +104,10 @@ public class GameController extends Thread {
             if (nameList.contains(playerY.getName().toLowerCase())) {
                 playerY.setWins(scoreList.get(nameList.lastIndexOf(playerY.getName())));
             }
-            }
+
             Xoutput.writeObject(playerX);
             Youtput.writeObject(playerY);
+            
             while (true) {
                 QuestionUtil q1 = new QuestionUtil();
                 q1.initializeQuestionDatabase();
@@ -143,11 +154,11 @@ public class GameController extends Thread {
                 if (playerY.getScorePerGame() > playerX.getScorePerGame()) {
                     playerY.setWins(playerY.getWins() + 1);
                 }
-                    writeToFile(playerX);
-                    writeToFile(playerY);
-                    
+
 
                 if (!Xinput.readLine().equalsIgnoreCase("nytt spel") && !Yinput.readLine().equalsIgnoreCase("nytt spel")) {
+                    writeToFile(playerX);
+                    writeToFile(playerY);
                     break;
                 }
 
