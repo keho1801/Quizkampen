@@ -184,9 +184,10 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         
         // Timer 
         JPanel timerBar = new JPanel();
+        timerBar.setPreferredSize(new Dimension(30, 100));
         timerBar.setBackground(Color.green);    
         questionPanel.add(timerBar, EAST);
-        Timer timer = new Timer(10000, timerBar);
+        Timer timer = new Timer(5000, timerBar);
         timer.start();
 
         
