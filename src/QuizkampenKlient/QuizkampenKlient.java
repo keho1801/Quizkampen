@@ -140,7 +140,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         question.setFont(new Font(fName, Font.PLAIN, fSize));
         question.setForeground(Color.black);
         question.setBackground(Color.WHITE);
-        infoPanel.setLayout(new GridLayout(1, 2));
+        infoPanel.setLayout(new GridLayout(1, 3));
         questionsPanel.setLayout(new FlowLayout());
         backgroundPanel.add(question, NORTH);
         question.setEditable(false);
@@ -159,6 +159,20 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         nextRound.setText("Starta spel");
         nextRound.setVisible(false);
         nextRound.setPreferredSize(new Dimension(200, 50));
+        
+        JButton t1 = new JButton("");
+        t1.setPreferredSize(new Dimension(30, 20));
+        JButton t2 = new JButton("");
+        t2.setPreferredSize(new Dimension(30, 20));
+        JButton t3 = new JButton("");
+        t3.setPreferredSize(new Dimension(30, 20));
+        
+        infoPanel.add(t1);
+        infoPanel.add(t2);
+        infoPanel.add(t3);
+        
+        Timer t = new Timer(3000, t1, t2, t3);
+        t.start();
         
         questionsPanel.add(button1);
         questionsPanel.add(button2);
