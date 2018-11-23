@@ -116,7 +116,12 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         answersPanel.setLayout(new FlowLayout());
         questionPanel.setLayout(new BorderLayout());
         backgroundPanel.add(questionPanel, NORTH);
-        questionPanel.add(question, CENTER);        question.setEditable(false);
+        questionPanel.add(question, CENTER);
+        
+       
+        
+        
+        question.setEditable(false);
         question.setLineWrap(true);
         question.setPreferredSize(new Dimension(550, 150));
         question.setMargin(new Insets(30, 30, 30, 30));
@@ -150,6 +155,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     }
     
     public void setWelcomeLayout() throws IOException{
+        
         question.setFont(new Font(fName, Font.PLAIN, fSize));
         question.setForeground(Color.black);
         question.setBackground(Color.WHITE);
@@ -175,19 +181,15 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         nextRound.setVisible(false);
         nextRound.setPreferredSize(new Dimension(200, 50));
         
-        JButton t1 = new JButton("");
-        t1.setPreferredSize(new Dimension(30, 20));
-        JButton t2 = new JButton("");
-        t2.setPreferredSize(new Dimension(30, 20));
-        JButton t3 = new JButton("");
-        t3.setPreferredSize(new Dimension(30, 20));
         
-        infoPanel.add(t1);
-        infoPanel.add(t2);
-        infoPanel.add(t3);
+        // Timer 
+        JPanel timerBar = new JPanel();
+        timerBar.setBackground(Color.green);    
+        questionPanel.add(timerBar, EAST);
+        Timer timer = new Timer(10000, timerBar);
+        timer.start();
+
         
-        Timer t = new Timer(3000, t1, t2, t3);
-        t.start();
         
         answersPanel.add(iconFemale);
         answersPanel.add(iconMale);
