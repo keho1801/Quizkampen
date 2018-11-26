@@ -138,8 +138,8 @@ public class GUI extends JFrame{
         timerBar.setPreferredSize(new Dimension(30, 100));
         timerBar.setBackground(Color.green);
         questionPanel.add(timerBar, EAST);
-        //Timer timer = new Timer(5000, timerBar);
-        //timer.start();
+        Timer timer = new Timer(5000, timerBar);
+        timer.start();
         
         nextRound.setText("Nästa fråga");
         repaint();
