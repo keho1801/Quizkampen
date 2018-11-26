@@ -35,6 +35,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     JButton iconMale = new JButton();
     JPanel timerBar = new JPanel();
     
+    Socket socketToServer;
     Object fromServer;
     Question questionFromServer;
     Player player;
@@ -100,7 +101,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
 
         
         try {
-            Socket socketToServer = new Socket(InetAddress.getByName("172.20.202.89"), 12345);
+            socketToServer = new Socket(InetAddress.getLocalHost(), 12345);
             out = new PrintWriter(socketToServer.getOutputStream(), true);
             in = new ObjectInputStream(socketToServer.getInputStream());
   
@@ -183,18 +184,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         category.setText("Väntar på motståndare");
         nextRound.setText("Starta spel");
         nextRound.setVisible(false);
-        nextRound.setPreferredSize(new Dimension(200, 50));
-        
-        
-        // Timer 
-        JPanel timerBar = new JPanel();
-        timerBar.setPreferredSize(new Dimension(30, 100));
-        timerBar.setBackground(Color.green);    
-        questionPanel.add(timerBar, EAST);
-        Timer timer = new Timer(5000, timerBar, fromUser);
-        timer.start();
-
-        
+        nextRound.setPreferredSize(new Dimension(200, 50)); 
         
         answersPanel.add(iconFemale);
         answersPanel.add(iconMale);
@@ -253,12 +243,12 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         button3.setPreferredSize(new Dimension(270, 150));
         button4.setPreferredSize(new Dimension(270, 150));
         
-//        timerBar.setPreferredSize(new Dimension(30, 100));
-//        timerBar.setBackground(Color.green);
-//        questionPanel.add(timerBar, EAST);
-//        Timer timer = new Timer(5000, timerBar);
-//        timer.start();
-        
+        // Timer
+        timerBar.setPreferredSize(new Dimension(30, 100));
+        timerBar.setBackground(Color.green);    
+        questionPanel.add(timerBar, EAST);
+        Timer timer = new Timer(5000, timerBar, fromUser, out, socketToServer);     
+        timer.start();
         
         nextRound.setText("Nästa fråga");
         repaint();
