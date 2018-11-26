@@ -191,7 +191,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         timerBar.setPreferredSize(new Dimension(30, 100));
         timerBar.setBackground(Color.green);    
         questionPanel.add(timerBar, EAST);
-        Timer timer = new Timer(5000, timerBar);
+        Timer timer = new Timer(5000, timerBar, fromUser);
         timer.start();
 
         
@@ -253,11 +253,11 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         button3.setPreferredSize(new Dimension(270, 150));
         button4.setPreferredSize(new Dimension(270, 150));
         
-        timerBar.setPreferredSize(new Dimension(30, 100));
-        timerBar.setBackground(Color.green);
-        questionPanel.add(timerBar, EAST);
-        Timer timer = new Timer(5000, timerBar);
-        timer.start();
+//        timerBar.setPreferredSize(new Dimension(30, 100));
+//        timerBar.setBackground(Color.green);
+//        questionPanel.add(timerBar, EAST);
+//        Timer timer = new Timer(5000, timerBar);
+//        timer.start();
         
         
         nextRound.setText("Nästa fråga");

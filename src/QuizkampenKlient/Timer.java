@@ -1,37 +1,41 @@
 package QuizkampenKlient;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import javax.swing.JPanel;
 
 public class Timer extends Thread {
     
     long timeToAnswer;
-    long second = 100;
-    int height = 50;
+    int interval;
+    int height = 100;
+    int heightReduction;
     JPanel timer;
+    String fromUser;
     
-    public Timer (int timeToAnswer, JPanel timer) {
+    public Timer (int timeToAnswer, JPanel timer, String fromUser) {
         this.timeToAnswer = timeToAnswer;
         this.timer = timer;
+        this.fromUser = fromUser;
         timer.setBackground(Color.green);
-//        timer.setPreferredSize(new Dimension(30, height));
+        interval = timeToAnswer / 100;
+        heightReduction = (height/interval) / 2;
     }
     
     @Override
     public void run() {
         
-        while(timeToAnswer >= second) {  
-            System.out.println("Tid kvar: " + timeToAnswer);
+        while(timeToAnswer >= 0) {  
             try {
-                Thread.sleep(second);
-                timeToAnswer -= second;
+                Thread.sleep(interval);
+                timeToAnswer -= interval;
                 timer.setSize(timer.getWidth(), height);
-                height -= 1;
+                height -= heightReduction;
+                if (height <= 0) {
+                    fromUser = "Wrong Answer, hombre";
+                }
                 
             } catch (InterruptedException e) {
-                System.out.println("Du hann svara på frågan innan tiden tog slut. Duktig du är. " + timeToAnswer);
-                
+                // Player answered the question in time.
             }
 
         }
