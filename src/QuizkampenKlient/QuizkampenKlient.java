@@ -33,6 +33,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     JButton button4 = new JButton("");
     JButton iconFemale = new JButton();
     JButton iconMale = new JButton();
+    JPanel timerBar = new JPanel();
     
     Object fromServer;
     Question questionFromServer;
@@ -54,7 +55,10 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         buttons[2] = button3;
         buttons[3] = button4;
         fromUser = JOptionPane.showInputDialog("Ange namn: ");
-        
+        button1.setOpaque(true);
+        button2.setOpaque(true);
+        button3.setOpaque(true);
+        button4.setOpaque(true);
         
         try {
             properties.load(new FileInputStream("src/QuizkampenKlient/ClientSettings.properties"));
@@ -227,7 +231,8 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         answersPanel.setLayout(new FlowLayout());
         questionPanel.setLayout(new BorderLayout());
         backgroundPanel.add(questionPanel, NORTH);
-        questionPanel.add(question, CENTER);        question.setEditable(false);
+        questionPanel.add(question, CENTER);        
+        question.setEditable(false);
         question.setLineWrap(true);
         question.setPreferredSize(new Dimension(550, 150));
         question.setMargin(new Insets(30, 30, 30, 30));
@@ -247,6 +252,12 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         button2.setPreferredSize(new Dimension(270, 150));
         button3.setPreferredSize(new Dimension(270, 150));
         button4.setPreferredSize(new Dimension(270, 150));
+        
+        timerBar.setPreferredSize(new Dimension(30, 100));
+        timerBar.setBackground(Color.green);
+        questionPanel.add(timerBar, EAST);
+        Timer timer = new Timer(5000, timerBar);
+        timer.start();
         
         
         nextRound.setText("Nästa fråga");
@@ -375,7 +386,9 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         
     public void runWhile(){
         try {
+            System.out.println("runWhile");
             fromServer = in.readObject();
+            System.out.println("Object from server has been read " + fromServer.getClass());
             if (fromServer instanceof Question) {
                 questionFromServer = (Question) fromServer;
                 
@@ -384,12 +397,15 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
                 category.setText(questionFromServer.getCategory());
                 setGameLayout();    
             } else if (fromServer instanceof Player) {
+                System.out.println("Player received "+ ((Player) fromServer).getScorePerRound()+" "+((Player) fromServer).getScorePerGame()+" " +((Player)fromServer).getName());
                 if (roundNumber == 0){
+                    System.out.println("round 0");
                     player = ((Player) fromServer);
                     category.setText("Kopplad till motståndare");
                     nextRound.setVisible(true);
                     roundNumber++;
                 } else if (roundNumber >= 1){
+                    System.out.println("round "+roundNumber);
                     opponent = ((Player) fromServer);
                     System.out.println(opponent.getScorePerGame());
                     System.out.println(opponent.getScorePerRound());

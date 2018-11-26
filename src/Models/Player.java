@@ -6,7 +6,6 @@ import java.io.Serializable;
 public class Player implements Serializable {
     static final long serialVersionUID = 43L;
     private String name;
-    private Player opponent;
     private int scorePerGame;
     private int scorePerRound;
     private int wins;
@@ -33,14 +32,6 @@ public Player(String name) {
 
     public void setWins(int wins) {
         this.wins = wins;
-    }
-
-    public void setOpponent(Player opponent) {
-        this.opponent = opponent;
-    }
-
-    public Player getOpponent() {
-        return opponent;
     }
     
     public void setName(String name){
