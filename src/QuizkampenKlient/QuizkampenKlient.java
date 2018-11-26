@@ -33,6 +33,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
     JButton button4 = new JButton("");
     JButton iconFemale = new JButton();
     JButton iconMale = new JButton();
+    JPanel timerBar = new JPanel();
     
     Object fromServer;
     Question questionFromServer;
@@ -213,7 +214,8 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         answersPanel.setLayout(new FlowLayout());
         questionPanel.setLayout(new BorderLayout());
         backgroundPanel.add(questionPanel, NORTH);
-        questionPanel.add(question, CENTER);        question.setEditable(false);
+        questionPanel.add(question, CENTER);        
+        question.setEditable(false);
         question.setLineWrap(true);
         question.setPreferredSize(new Dimension(550, 150));
         question.setMargin(new Insets(30, 30, 30, 30));
@@ -233,6 +235,12 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         button2.setPreferredSize(new Dimension(270, 150));
         button3.setPreferredSize(new Dimension(270, 150));
         button4.setPreferredSize(new Dimension(270, 150));
+        
+        timerBar.setPreferredSize(new Dimension(30, 100));
+        timerBar.setBackground(Color.green);
+        questionPanel.add(timerBar, EAST);
+        Timer timer = new Timer(5000, timerBar);
+        timer.start();
         
         
         nextRound.setText("Nästa fråga");
