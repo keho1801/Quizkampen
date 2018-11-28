@@ -47,20 +47,22 @@ public class GameController extends Thread {
     @Override
     public void run() {
         try {
+            QuestionUtil q1 = new QuestionUtil();
+            numberOfQuestionsPerRound = q1.getnrOfQuestionsPerRound();
+            numberOfRoundsPerGame = q1.getnrOfRoundsPerGame();
             playerX.setScorePerGame(0);
             playerY.setScorePerGame(0);
             playerX.setName(Xinput.readLine());
             playerY.setName(Yinput.readLine());
+            playerX.setNumberOfRoundsPerGame(numberOfRoundsPerGame);
+            playerY.setNumberOfRoundsPerGame(numberOfRoundsPerGame);
             Xoutput.writeObject(playerX);
             Youtput.writeObject(playerY);
             while (true) {
-                QuestionUtil q1 = new QuestionUtil();
+
                 q1.initializeQuestionDatabase();
                 q1.shuffleQuestionList();
-                numberOfQuestionsPerRound = q1.getnrOfQuestionsPerRound();
-                numberOfRoundsPerGame = q1.getnrOfRoundsPerGame();
-                playerX.setNumberOfRoundsPerGame(numberOfRoundsPerGame);
-                playerY.setNumberOfRoundsPerGame(numberOfRoundsPerGame);
+
 
                 int o = 0;
                 while (o < numberOfRoundsPerGame) {

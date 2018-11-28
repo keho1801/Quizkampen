@@ -38,6 +38,7 @@ public class QuestionUtil {
     }
     
         public void initializeQuestionDatabase() throws IOException {
+            questionsDatabase.clear();
             
             String filePath = "src/QuizKampenServer/questionDatabase.txt";
             String dbQuestion, dbAnswers, dbCategory;
