@@ -1,32 +1,20 @@
 package QuizkampenKlient;
 
 import java.awt.Color;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
 import javax.swing.JPanel;
 
 public class Timer extends Thread {
     
-    long timeToAnswer;
-    int interval;
+    int timeToAnswer;
+    int interval = timeToAnswer / 100;
     int height = 100;
-    int heightReduction;
-    Socket socketToServer;
+    int heightReduction = 1;
     JPanel timer;
-    String fromUser;
-    PrintWriter out;
     
-    public Timer (int timeToAnswer, JPanel timer, String fromUser, PrintWriter out, Socket socketToServer) {
-        this.timeToAnswer = timeToAnswer;
-        interval = timeToAnswer / 100;
+    public Timer (int timeToAnswer, JPanel timer) {
         this.timer = timer;
-        this.fromUser = fromUser;
-        this.out = out;
-        this.socketToServer = socketToServer;
-        
+        this.timeToAnswer = timeToAnswer;
         timer.setBackground(Color.green);
-        heightReduction = (height/interval) / 2;
     }
     
     @Override
@@ -40,14 +28,12 @@ public class Timer extends Thread {
                 height -= heightReduction;
                 
                 if (height <= 0) {
-                    fromUser = "Wrong Answer, hombre";
-                        out.println(fromUser);
-                    this.interrupt();
+                    System.out.println("timeout");
                     break;
                 }
                 
             } catch (InterruptedException e) {
-                break;
+                System.out.println("Interrupted Exception" + e.getMessage());
             }
         }
     }
