@@ -50,6 +50,12 @@ public class GameController extends Thread {
             QuestionUtil q1 = new QuestionUtil();
             numberOfQuestionsPerRound = q1.getnrOfQuestionsPerRound();
             numberOfRoundsPerGame = q1.getnrOfRoundsPerGame();
+            int xScore;
+            int yScore;
+            int xScoreGame;
+            int yScoreGame;
+            String xName;
+            String yName;
             playerX.setScorePerGame(0);
             playerY.setScorePerGame(0);
             playerX.setName(Xinput.readLine());
@@ -62,23 +68,22 @@ public class GameController extends Thread {
 
                 q1.initializeQuestionDatabase();
                 q1.shuffleQuestionList();
-
+                playerX.setScorePerGame(0);
+                playerY.setScorePerGame(0);
+                xScoreGame = 0;
+                yScoreGame = 0;
 
                 int o = 0;
                 while (o < numberOfRoundsPerGame) {
                     questionsInGame = new ArrayList<>();
                     q1.shuffleQuestionList();
                     questionsInGame = q1.getQuestionsInGame();
-                    
-                    playerX.setScorePerRound(0);
-                    playerY.setScorePerRound(0);
-                    
 
                     for (int i = 0; i < numberOfQuestionsPerRound; i++) {
 
                         Xoutput.writeObject(questionsInGame.get(i));
                         Youtput.writeObject(questionsInGame.get(i));
-
+                        
                         if ((XstrInput = Xinput.readLine()) != null && (YstrInput = Yinput.readLine()) != null) {
 
                             if (questionsInGame.get(i).getAnswers()[0].equals(XstrInput)) {
@@ -93,21 +98,42 @@ public class GameController extends Thread {
                             }
                         }
                     }
-                    System.out.println("Runda avklarad!");
-                    System.out.println("Skickar resultat til klient, spelare X"+ " "+ playerX.getScorePerRound() + " "+playerX.getScorePerGame());
-                    System.out.println("Skickar resultat til klient, spelare y"+ " "+ playerY.getScorePerRound() + " "+playerY.getScorePerGame());
-                    Xoutput.writeObject(playerY);
-                    Youtput.writeObject(playerX);
                     
-                    playerY.setName("Y");
-                    playerX.setName("X");
+                    xName = playerX.getName();
+                    yName = playerY.getName();
+                    xScore = playerX.getScorePerRound();
+                    xScoreGame = playerX.getScorePerGame();
+                    
+                    yScore = playerY.getScorePerRound();
+                    yScoreGame = playerY.getScorePerGame();
+                    //checka 0:an
+
+                    playerX = new Player(xName);
+                    playerY = new Player(yName);
+
+                    playerY.setScorePerRound(yScore);
+                    playerY.setScorePerGame(yScoreGame);
+
+                    playerX.setScorePerRound(xScore);
+                    playerX.setScorePerGame(xScoreGame);
+                    
+                    Xoutput.writeObject(playerY);
+                    Youtput.writeObject(playerX); 
+                    yScore = 0;
+                    xScore = 0;
+                                        
+                    playerX.setScorePerRound(0);
+                    playerY.setScorePerRound(0);
+                    
+                      
 
                     o++;
                 }
-
+                
                 if(!Xinput.readLine().equalsIgnoreCase("nytt spel") && !Yinput.readLine().equalsIgnoreCase("nytt spel")) {
                     break;
                 }
+                YstrInput = Yinput.readLine();
             }
         } catch (IOException ex) {
             System.out.println("något gick fel");
