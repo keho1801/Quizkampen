@@ -81,7 +81,7 @@ public class GUI extends JFrame{
         answersPanel.setLayout(new FlowLayout());
         backgroundPanel.add(answersPanel, CENTER);
         for (int i = 0; i < 4; i++) {
-            buttons[i].setOpaque(false);
+            buttons[i].setOpaque(true);
             buttons[i].setPreferredSize(new Dimension(270, 150));
             answersPanel.add(buttons[i]);
         }
@@ -222,6 +222,8 @@ public class GUI extends JFrame{
                     buttons[index].setBackground(Color.white);
                     buttons[index].setToolTipText("You can do it!");
                     buttons[i].setEnabled(true);
+                    buttons[i].setOpaque(true);
+                    buttons[i].setVisible(true);
                     break;
                 }
             }

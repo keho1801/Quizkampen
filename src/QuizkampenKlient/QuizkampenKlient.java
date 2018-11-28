@@ -30,6 +30,7 @@ public class QuizkampenKlient extends JFrame implements ActionListener{
         for (int i = 0; i < 4; i++) {
             buttons[i] = new JButton("");
             buttons[i].addActionListener(this);
+            buttons[i].setOpaque(true);
         }
         
         nextRound.addActionListener(new ActionListener() {
