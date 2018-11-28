@@ -81,7 +81,7 @@ public class GUI extends JFrame{
         answersPanel.setLayout(new FlowLayout());
         backgroundPanel.add(answersPanel, CENTER);
         for (int i = 0; i < 4; i++) {
-            buttons[i].setOpaque(true);
+            buttons[i].setOpaque(false);
             buttons[i].setPreferredSize(new Dimension(270, 150));
             answersPanel.add(buttons[i]);
         }
@@ -174,6 +174,7 @@ public class GUI extends JFrame{
             player1Text.setBackground(Color.WHITE);
             player2Text.setBackground(Color.WHITE);
         } else if (roundNumber == player.getNumberOfRoundsPerGame()){
+            System.out.println(player.getNumberOfRoundsPerGame());
             nextRound.setText("Nytt spel");
             roundNumber = 0;
             
