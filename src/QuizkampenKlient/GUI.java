@@ -129,15 +129,18 @@ public class GUI extends JFrame{
         answersPanel.remove(iconFemale);
         answersPanel.remove(iconMale);
         
-        backgroundPanel.add(answersPanel);
-        backgroundPanel.add(questionPanel);
+        
+        backgroundPanel.add(questionPanel, NORTH);
         for (int i = 0; i < 4; i++) {
             answersPanel.add(buttons[i]);
+            buttons[i].setVisible(true);
+            buttons[i].setOpaque(true);
         }
+        backgroundPanel.add(answersPanel, CENTER);
         
-        timerBar.setPreferredSize(new Dimension(30, 100));
-        timerBar.setBackground(Color.green);
-        questionPanel.add(timerBar, EAST);
+//        timerBar.setPreferredSize(new Dimension(30, 100));
+//        timerBar.setBackground(Color.green);
+//        questionPanel.add(timerBar, EAST);
         //Timer timer = new Timer(5000, timerBar);
         //timer.start();
         
