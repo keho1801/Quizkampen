@@ -171,14 +171,35 @@ public class GUI extends JFrame{
             player2Text.setText(opponent.getName() + "\nPoäng denna runda: " + opponent.getScorePerRound());
             nextRound.setText("Starta nästa runda");
             roundNumber++;
+            player1Text.setBackground(Color.WHITE);
+            player2Text.setBackground(Color.WHITE);
         } else if (roundNumber == 2){
-            player1Text.setText(player.getName() + "\nPoäng denna runda: " + player.getScorePerRound() 
-                    + "\nPoäng detta spel: " + player.getScorePerGame());
-            player2Text.setText(opponent.getName() + "\nPoäng denna runda: " + opponent.getScorePerRound() 
-                    + "\nPoäng detta spel: " + opponent.getScorePerGame());
-            
             nextRound.setText("Nytt spel");
             roundNumber = 0;
+            
+            if (player.getScorePerGame() > opponent.getScorePerGame()){
+                player1Text.setBackground(Color.green);
+                player2Text.setBackground(Color.red);
+                player1Text.setText(player.getName() + "\nPoäng denna runda: " + player.getScorePerRound() 
+                    + "\nPoäng detta spel: " + player.getScorePerGame()+ "\n\nVinnare!!");
+                player2Text.setText(opponent.getName() + "\nPoäng denna runda: " + opponent.getScorePerRound() 
+                    + "\nPoäng detta spel: " + opponent.getScorePerGame() + "\n\nFörlorare");
+                
+            } else if (player.getScorePerGame() < opponent.getScorePerGame()){
+                player1Text.setBackground(Color.red);
+                player2Text.setBackground(Color.green);
+                
+                player1Text.setText(player.getName() + "\nPoäng denna runda: " + player.getScorePerRound() 
+                    + "\nPoäng detta spel: " + player.getScorePerGame() + "\n\nFörlorare");
+                player2Text.setText(opponent.getName() + "\nPoäng denna runda: " + opponent.getScorePerRound() 
+                    + "\nPoäng detta spel: " + opponent.getScorePerGame() + "\n\nVinnare!!");
+                
+            } else {
+                player1Text.setText(player.getName() + "\nPoäng denna runda: " + player.getScorePerRound() 
+                    + "\nPoäng detta spel: " + player.getScorePerGame() + "\n\nOavgjort");
+            player2Text.setText(opponent.getName() + "\nPoäng denna runda: " + opponent.getScorePerRound() 
+                    + "\nPoäng detta spel: " + opponent.getScorePerGame() + "\n\nOavgjort");
+            }
         }
         repaint();
         revalidate();
