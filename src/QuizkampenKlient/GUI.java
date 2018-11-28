@@ -173,7 +173,7 @@ public class GUI extends JFrame{
             roundNumber++;
             player1Text.setBackground(Color.WHITE);
             player2Text.setBackground(Color.WHITE);
-        } else if (roundNumber == 2){
+        } else if (roundNumber == player.getNumberOfRoundsPerGame()){
             nextRound.setText("Nytt spel");
             roundNumber = 0;
             

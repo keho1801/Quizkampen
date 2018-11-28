@@ -54,4 +54,8 @@ public Player(String name) {
     public void setNumberOfRoundsPerGame(int i){
         this.numberOfRoundsPerGame = i;
     }
+    
+    public int getNumberOfRoundsPerGame(){
+        return numberOfRoundsPerGame;
+    }
 }
