@@ -173,6 +173,7 @@ public class GUI extends JFrame{
             roundNumber++;
             player1Text.setBackground(Color.WHITE);
             player2Text.setBackground(Color.WHITE);
+            System.out.println(player.getNumberOfRoundsPerGame() + " round 1");
         } else if (roundNumber == player.getNumberOfRoundsPerGame()){
             System.out.println(player.getNumberOfRoundsPerGame());
             nextRound.setText("Nytt spel");
@@ -204,7 +205,7 @@ public class GUI extends JFrame{
         }
         repaint();
         revalidate();
-        
+        System.out.println("hejehj");
         return roundNumber;
     }
     

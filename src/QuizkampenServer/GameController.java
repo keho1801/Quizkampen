@@ -60,6 +60,7 @@ public class GameController extends Thread {
                 numberOfQuestionsPerRound = q1.getnrOfQuestionsPerRound();
                 numberOfRoundsPerGame = q1.getnrOfRoundsPerGame();
                 playerX.setNumberOfRoundsPerGame(numberOfRoundsPerGame);
+                playerY.setNumberOfRoundsPerGame(numberOfRoundsPerGame);
 
                 int o = 0;
                 while (o < numberOfRoundsPerGame) {
