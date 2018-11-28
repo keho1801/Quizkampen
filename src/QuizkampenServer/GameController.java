@@ -8,11 +8,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class GameController extends Thread {
 
@@ -63,6 +59,7 @@ public class GameController extends Thread {
                 q1.shuffleQuestionList();
                 numberOfQuestionsPerRound = q1.getnrOfQuestionsPerRound();
                 numberOfRoundsPerGame = q1.getnrOfRoundsPerGame();
+                playerX.setNumberOfRoundsPerGame(numberOfRoundsPerGame);
 
                 int o = 0;
                 while (o < numberOfRoundsPerGame) {

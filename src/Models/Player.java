@@ -9,6 +9,7 @@ public class Player implements Serializable {
     private int scorePerGame;
     private int scorePerRound;
     private int wins;
+    private int numberOfRoundsPerGame;
     
 public Player(String name) {
     this.name = name;
@@ -48,5 +49,9 @@ public Player(String name) {
     public int getScorePerRound(){
         return scorePerRound;
         
+    }
+    
+    public void setNumberOfRoundsPerGame(int i){
+        this.numberOfRoundsPerGame = i;
     }
 }
